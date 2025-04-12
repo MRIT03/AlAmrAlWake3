@@ -1,0 +1,10 @@
+.post-feed{
+    /* background-color: orange; */
+    border-radius: 20px;
+    border: 3px solid black;
+    padding-right: 10px;
+    padding-left: 10px;
+    /* padding-bottom: 10px; */
+    box-shadow: 6px;
+    padding-top: 0px;
+}
