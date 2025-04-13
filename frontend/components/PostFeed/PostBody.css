@@ -1,0 +1,12 @@
+.post-body{
+    /* background-color: green; */
+    width: 600px;
+}
+
+p{
+    text-align: start;
+    font-size: 18px;
+    padding-left: 0.25rem;
+    
+    max-width: 600px;
+}
