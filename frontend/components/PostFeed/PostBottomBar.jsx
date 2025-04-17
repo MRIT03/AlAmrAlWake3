@@ -2,7 +2,7 @@ import React from "react";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './PostBottomBar.css';
 
-const PostBottomBar = ({ counters, flagCount, onReact, selectedReaction, isFlagged }) => {
+const PostBottomBar = ({ counters, onReact, selectedReaction, oneHourPassed }) => {
     const reactions = [
         { icon: "hand-thumbs-up", fillIcon: "hand-thumbs-up-fill", label: "Like", color: "blue", counter: counters[0] },
         { icon: "heart", fillIcon: "heart-fill", label: "Love", color: "purple", counter: counters[1] },
@@ -26,6 +26,7 @@ const PostBottomBar = ({ counters, flagCount, onReact, selectedReaction, isFlagg
                                 <button
                                     className={`reaction-btn ${colorClass} ${isSelected ? 'active' : ''}`}
                                     onClick={() => onReact(index)}
+                                    title={reaction.label}
                                 >
                                     <i className={`bi bi-${iconClass}`}></i>
                                 </button>
@@ -36,18 +37,21 @@ const PostBottomBar = ({ counters, flagCount, onReact, selectedReaction, isFlagg
                 </div>
 
                 {/* Flag section */}
-                <div className="d-flex align-items-center mt-3 mt-md-0">
-                    <button
-                        className={`btn btn-outline-danger d-flex align-items-center ${isFlagged ? 'flag-active' : ''}`}
-                        style={{ borderRadius: '20px', padding: '4px 10px' }}
-                        onClick={() => onReact('flag')}
-                    >
-                        <i className={`bi ${isFlagged ? 'bi-flag-fill' : 'bi-flag'} me-2`}></i>
-                        Flag as suspicious
-                    </button>
+                {oneHourPassed && (
+                    <div className="d-flex align-items-center mt-3 mt-md-0">
+                        <button
+                            className={`btn btn-outline-danger d-flex align-items-center ${(counters[7] == 1) ? 'flag-active' : ''}`}
+                            style={{ borderRadius: '20px', padding: '4px 10px' }}
+                            onClick={() => onReact(6)}
+                        >
+                            <i className={`bi ${(counters[7] == 1) ? 'bi-flag-fill' : 'bi-flag'} me-2`}></i>
+                            Flag as suspicious
+                        </button>
 
-                    <span className="ms-2 text-muted small">{flagCount}</span>
-                </div>
+                        <span className="ms-2 text-muted small">{counters[6]}</span>
+                    </div>
+                )}
+
             </div>
         </div>
     );

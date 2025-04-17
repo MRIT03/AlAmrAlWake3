@@ -6,6 +6,7 @@
 }
 
 .post-top-bar-headline{
-    text-align: start;
+    text-align: right;
     font-size: 1.5rem;
+    width: 100%;
 }

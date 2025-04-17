@@ -1,6 +1,6 @@
 .post-bottom-bar{
     /* background-color: tomato; */
-    border-top: 3px solid black;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin-left: -10px;
     margin-right: -10px;
 }

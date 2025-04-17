@@ -6,10 +6,10 @@ import './App.css'
 
 import MapContainer from '/components/Map/MapContainer';
 import MapPage from '../components/Map/MapPage';
+import PostElement from '../components/PostFeed/PostElement';
 import PostFeed from '../components/PostFeed/PostFeed';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <div className="app-layout">
