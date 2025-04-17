@@ -1,21 +1,27 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
 
-import MapContainer from '/components/Map/MapContainer';
+// Importing pages
+import FeedPage from '../components/PostFeed/FeedPage';
 import MapPage from '../components/Map/MapPage';
-import PostElement from '../components/PostFeed/PostElement';
-import PostFeed from '../components/PostFeed/PostFeed';
+import SearchPage from '../components/Search/SearchPage';
+import SettingsPage from '../components/Settings/SettingsPage';
 
 function App() {
-
   return (
-    <div className="app-layout">
-      <PostFeed />
-    </div>
-  )
+    <Router>
+      <div className="app-layout">
+        {/* Define Routes for FeedPage, MapPage, SearchPage, SettingsPage */}
+        <Routes>
+          <Route path="/" element={<FeedPage />} />
+          <Route path="/map" element={<MapPage />} />
+          <Route path="/search" element={<SearchPage />} /> 
+          <Route path="/settings" element={<SettingsPage />} /> 
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;

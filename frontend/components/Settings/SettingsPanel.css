@@ -2,19 +2,23 @@
   .settings-panel-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 120px; /*might remove it if not currently playing*/
+    margin-bottom: 0px; /*might remove it if not currently playing*/
   }
 
+  .username-container{
+    margin-top: -40px;
+  }
 
   .username{
     padding: 0;
-    color: #6e2af5;
+    color: #005ad4;
     font-weight: bold;
     margin-bottom: 0px;
   }
 
-  .avatar{
-    transform: scale(0.55);
+  .settings-avatar{
+    font-size: 80px;
+    color: #005ad4;
     margin-top: -10px;
     margin-bottom: -28px;
   }
