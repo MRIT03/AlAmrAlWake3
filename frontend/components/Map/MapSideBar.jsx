@@ -4,7 +4,7 @@ import './MapSideBar.css';
 const MapSideBar = ({ newsByLoc = [], onHeadlineClick = () => {} }) => {
   return (
     <div className="map-sidebar">
-      <h2>📰 Latest News by Location</h2>
+      <h3 className='map-sidebar-title'>📰 Latest News by Location</h3>
       <div className="headline-list">
         {newsByLoc.map((loc, index) => (
           <div key={index} className="city-headlines">

@@ -1,13 +1,13 @@
 import React, {useState,useEffect} from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './SettingsPanel.css'; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; 
 import SettingsInputField from './SettingsInputField';
 import axios from 'axios';
 
-const SettingsPanel = () => {
+const SettingsPanel = ({givenUsername}) => {
 
-    const oldPasswordConfirmed = false;
+    const [oldPasswordConfirmed, setOldPasswordConfirmed] = useState(false); 
     
     const [username, setUsername] = useState('');
     const [loading, setLoading] = useState(true);
@@ -44,8 +44,7 @@ const SettingsPanel = () => {
     const submitNewMailAddress = () => {};
     const submitOldPassword = () => {
         // some logic here before confirming old password
-        oldPasswordConfirmed = true;
-    };
+        setOldPasswordConfirmed(true);    };
     const submitNewPassword = () => {};
 
     // Danger Zone
@@ -70,8 +69,8 @@ const SettingsPanel = () => {
         <div className='settings-panel-container'>
 
             <div className='username-container'>
-                <img src={`${process.env.PUBLIC_URL}/avatar.png`} alt="Avatar" className={"avatar"}/>
-                <h4 className='username'>Hello {username} !</h4>
+                <i className="bi bi-person-circle settings-avatar"></i>
+                <h4 className='username'>Hello {givenUsername} !</h4>
             </div>
 
             <div className='settings-panel'>

@@ -10,7 +10,7 @@
   }
 
   .settings-input-field {
-    background: #6e2af5;
+    background: #005ad4;
     border: 0px solid #ced4da;
     border-radius: 12px;
     width: 100%;
@@ -42,11 +42,11 @@
   }
 
   .settings-submit-button{
-    border: solid #6e2af5 4px;
+    border: solid #005ad4 4px;
     border-radius: 12px;
     background-color: white;
     margin-left: 32px;
-    color: #6e2af5;
+    color: #005ad4;
     padding: 4px 10px;
     font-weight: 650;
     font-size: 1.35em;
