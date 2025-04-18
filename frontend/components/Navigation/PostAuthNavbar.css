@@ -12,7 +12,7 @@
     left: 0;
   }
 
-  .navbar-links {
+  .post-auth-navbar-links {
     padding-right: 24px;
   }
 
@@ -27,10 +27,22 @@
     cursor: pointer;
   }
 
-  .navbar-button{
+  .post-auth-navbar-button{
     cursor: pointer;
-    color: #6e2af5;
+    color: #2d3879;
+    background-color: white;
     font-weight: bold;
     font-size: 18px;
     padding: 0px 16px;
+    border: 0px;
+  }
+
+  .post-auth-navbar-button:hover{
+    cursor: pointer;
+    color: #0055ad;
+    background-color: white;
+    font-weight: bold;
+    font-size: 18.5px;
+    padding: 0px 16px;
+    border: 0px;
   }

@@ -1,8 +1,8 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './SearchBar.css'; // Add custom styles here if needed
+import './SearchBar.css'; 
 
-const SearchBar = ({ placeholder, onChange, value }) => {
+const SearchBar = ({ placeholder="this is a placeholder", onChange=null, value=null }) => {
   
     const handleKeyPress = (e) => {
         if(e.key === 'Enter') {
@@ -25,7 +25,7 @@ const SearchBar = ({ placeholder, onChange, value }) => {
                 className="form-control"
                 placeholder={placeholder}
                 value={value}
-                onChange={onChange}
+                // onChange={onChange}
                 onKeyDown={handleKeyPress}
             />
         </div>        

@@ -1,0 +1,14 @@
+.post-element {
+    border-radius: 20px;
+    padding: 10px;
+    background-color: #fff; /* Or whatever fits your theme */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    border: none; /* Remove thick border */
+    margin-top: 36px;
+    margin-bottom: 36px;
+    transition: box-shadow 0.3s ease;
+}
+
+.post-element:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Optional: slightly deeper shadow on hover */
+}

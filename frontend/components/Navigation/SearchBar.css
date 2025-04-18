@@ -1,6 +1,7 @@
   .search-bar-container {
     display: flex;
     justify-content: center;
+    width: 1000px;
     margin-top: 16px;
     margin-bottom: 16px;
   }
@@ -13,7 +14,7 @@
   }
   
   .search-icon {
-    background-color: #6e2af5;
+    background-color: #0055ad; 
     color: white;
     border: none;
     border-radius: 50%;
@@ -29,13 +30,13 @@
     box-shadow: none;
     font-style: italic;
     font-weight: 630;
-    color: #9c6ef9;
+    color: #4f88ce ;
   }
 
   .form-control::placeholder{
     font-style: italic;
     font-weight: 630;
-    color: #9c6ef9;
+    color: #4f88ce ;
   }
 
   .form-control:focus{

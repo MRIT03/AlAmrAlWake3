@@ -1,5 +1,13 @@
-.post-main-part-timestamp {
+.post-main-part-PTS-timestamp {
     text-align: end;
+    margin-top: 18px;
+    margin-right: 18px;
+    /* margin-bottom: 1px; */
+    /* background-color: cadetblue; */
+}
+
+.post-main-part-location {
+    text-align: start;
     margin-top: 18px;
     margin-right: 18px;
     /* margin-bottom: 1px; */

@@ -40,4 +40,10 @@
     margin-bottom: 0.25rem;
     font-size: 1rem;
   }
+
+  .map-sidebar-title{
+    font-size: 1.5rem;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
   

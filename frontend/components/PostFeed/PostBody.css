@@ -4,9 +4,25 @@
 }
 
 p{
-    text-align: start;
+    text-align: end;
     font-size: 18px;
     padding-left: 0.25rem;
-    
-    max-width: 600px;
+}
+
+.post-body-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* limit to 4 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    line-height: 1.6;
+    max-height: calc(1.6em * 4); /* matches 4 lines */
+}
+
+.post-body-see-more-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 5px;
 }
