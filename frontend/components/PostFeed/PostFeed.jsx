@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './PostFeed.css';
 import PostElement from './PostElement';
 
 const PostFeed = () => {
@@ -14,6 +15,8 @@ const PostFeed = () => {
       .catch(err => console.error("Error loading posts:", err));
   }, []);
 
+  // TO-DO send a http promise / request, display posts
+  
   return (
     <div>
       {posts.map((post, index) => (

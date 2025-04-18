@@ -1,8 +1,8 @@
 import React from "react";
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './PostBottomBar.css';
+import './AdminBottomBar.css';
 
-const PostBottomBar = ({ counters, onReact, selectedReaction, oneHourPassed }) => {
+const AdminBottomBar = ({ counters, onReact, selectedReaction, oneHourPassed }) => {
     const reactions = [
         { icon: "hand-thumbs-up", fillIcon: "hand-thumbs-up-fill", label: "Like", color: "blue", counter: counters[0] },
         { icon: "heart", fillIcon: "heart-fill", label: "Love", color: "purple", counter: counters[1] },
@@ -18,18 +18,20 @@ const PostBottomBar = ({ counters, onReact, selectedReaction, oneHourPassed }) =
                 <div className="d-flex flex-wrap gap-3">
                     {reactions.map((reaction, index) => {
                         const isSelected = selectedReaction === index;
-                        const iconClass = isSelected ? reaction.fillIcon : reaction.icon;
+                        const iconClass = reaction.fillIcon;
                         const colorClass = `reaction-${reaction.label.toLowerCase()}`;
 
                         return (
                             <div key={index} className="d-flex align-items-center">
                                 <button
-                                    className={`reaction-btn ${colorClass} ${isSelected ? 'active' : ''}`}
-                                    onClick={() => onReact(index)}
-                                    title={reaction.label}
+                                className="admin-reaction-btn"
+                                onClick={null}
+                                disabled
+                                title={reaction.label}
                                 >
-                                    <i className={`bi bi-${iconClass}`}></i>
+                                <i className={`bi bi-${iconClass}`}></i>
                                 </button>
+
                                 <span className="ms-2 text-muted small">{reaction.counter}</span>
                             </div>
                         );
@@ -38,18 +40,14 @@ const PostBottomBar = ({ counters, onReact, selectedReaction, oneHourPassed }) =
 
                 {/* Flag section */}
                 {oneHourPassed && (
-                    <div className="d-flex align-items-center mt-3 mt-md-0">
-                        <button
-                            className={`btn btn-outline-danger d-flex align-items-center ${(counters[7] == 1) ? 'flag-active' : ''}`}
-                            style={{ borderRadius: '20px', padding: '4px 10px' }}
-                            onClick={() => onReact(6)}
-                        >
-                            <i className={`bi ${(counters[7] == 1) ? 'bi-flag-fill' : 'bi-flag'} me-2`}></i>
-                            {(counters[7] == 1) ? 'Flagged as Suspicious' : 'Flag as Suspicious'}
-                        </button>
 
-                        <span className="ms-2 text-muted small">{counters[6]}</span>
+                    <div className="admin-actions">
+                        <button className="flag-verify">Verify</button>
+                        <button className="flag-fake">Fake News</button>
+                        <button className="flag-delete">Delete</button>
                     </div>
+
+                  
                 )}
 
             </div>
@@ -57,4 +55,4 @@ const PostBottomBar = ({ counters, onReact, selectedReaction, oneHourPassed }) =
     );
 };
 
-export default PostBottomBar;
+export default AdminBottomBar;
