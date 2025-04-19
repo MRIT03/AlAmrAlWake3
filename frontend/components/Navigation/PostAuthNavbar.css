@@ -1,0 +1,48 @@
+  .navbar-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    background-color: white;
+    width: 100vw;
+    height: 81px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .post-auth-navbar-links {
+    padding-right: 24px;
+  }
+
+  .logo-container {
+    padding-left: 32px;
+  }
+
+  .navlogo {
+    width: 180px;
+    height: 100px;
+    object-fit: contain;
+    cursor: pointer;
+  }
+
+  .post-auth-navbar-button{
+    cursor: pointer;
+    color: #2d3879;
+    background-color: white;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 0px 16px;
+    border: 0px;
+  }
+
+  .post-auth-navbar-button:hover{
+    cursor: pointer;
+    color: #0055ad;
+    background-color: white;
+    font-weight: bold;
+    font-size: 18.5px;
+    padding: 0px 16px;
+    border: 0px;
+  }

@@ -1,0 +1,12 @@
+.post-top-bar{
+    /* background-color: blueviolet; */
+    padding: 0;
+    width: 600px;
+    max-width: 600px;
+}
+
+.post-top-bar-headline{
+    text-align: right;
+    font-size: 1.5rem;
+    width: 100%;
+}

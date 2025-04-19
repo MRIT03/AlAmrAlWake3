@@ -1,0 +1,81 @@
+.post-bottom-bar{
+    /* background-color: tomato; */
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.reaction-btn {
+    all: unset; /* Reset any inherited Bootstrap styles */
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ced4da;
+    background-color: white;
+    border-radius: 50% !important; /* Force circular shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: gray;
+    cursor: pointer;
+    box-sizing: border-box;
+    outline: none;
+}
+
+/* Prevent focus blue border */
+.reaction-btn:focus,
+.reaction-btn:focus-visible {
+    outline: none;
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+/* Colors on hover or active */
+.reaction-like:hover,
+.reaction-like.active {
+    color: blue;
+    background-color: rgba(0, 0, 255, 0.1);
+    border-color: blue; /* optional: border can match */
+}
+
+.reaction-love:hover,
+.reaction-love.active {
+    color: purple;
+    background-color: rgba(128, 0, 128, 0.1);
+    border-color: purple;
+}
+
+.reaction-wow:hover,
+.reaction-wow.active {
+    color: green;
+    background-color: rgba(0, 128, 0, 0.1);
+    border-color: green;
+}
+
+.reaction-insightful:hover,
+.reaction-insightful.active {
+    color: goldenrod;
+    background-color: rgba(218, 165, 32, 0.15);
+    border-color: goldenrod;
+}
+
+.reaction-sad:hover,
+.reaction-sad.active {
+    color: deepskyblue;
+    background-color: rgba(0, 191, 255, 0.1);
+    border-color: deepskyblue;
+}
+
+.reaction-angry:hover,
+.reaction-angry.active {
+    color: red;
+    background-color: rgba(255, 0, 0, 0.1);
+    border-color: red;
+}
+
+/* Flag selected style */
+.flag-active {
+    background-color: #f8d7da !important;
+    border-color: #f5c2c7 !important;
+    color: #842029 !important;
+}
