@@ -1,0 +1,22 @@
+.single-post-view-back-button {
+    background-color: #4351a0;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.single-post-view-back-button i {
+    color: white;
+    font-size: 1.1rem;
+}
+
+.single-post-view-back-button:hover {
+    background-color: #361187;
+    cursor: pointer;
+}

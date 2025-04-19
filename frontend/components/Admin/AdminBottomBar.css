@@ -1,0 +1,57 @@
+.admin-actions {
+    display: flex;
+    gap: 8px; /* space between buttons */
+    /* margin-top: 0.5rem; */
+  }
+  
+  .admin-actions button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 40px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .admin-reaction-btn{
+    /* background-color: #4315a0; */
+    all: unset; 
+    width: 40px;
+    height: 40px;
+    border: 1px solid #4315a0;
+    background-color: white;
+    border-radius: 50% !important; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: #4315a0d2;
+    cursor: pointer;
+    box-sizing: border-box;
+    outline: none;
+  }
+  .flag-verify {
+    background-color: #d1e7dd;
+    border: 1px solid #badbcc;
+    color: #0f5132;
+  }
+  
+  /* Fake News - Orange */
+  .flag-fake {
+    background-color: #fff3cd;
+    border: 1px solid #ffecb5;
+    color: #664d03;
+  }
+  
+  /* Delete - Red */
+  .flag-delete {
+    background-color: #f8d7da;
+    border: 1px solid #f5c2c7;
+    color: #842029;
+  }
+  
+  /* Optional: hover effect */
+  .admin-actions button:hover {
+    opacity: 0.9;
+  }
+  

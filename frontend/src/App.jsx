@@ -7,6 +7,8 @@ import FeedPage from '../components/PostFeed/FeedPage';
 import MapPage from '../components/Map/MapPage';
 import SearchPage from '../components/Search/SearchPage';
 import SettingsPage from '../components/Settings/SettingsPage';
+import SinglePostView from '../components/Misc/SinglePostView';
+import NewsSourcePage from '../components/Misc/NewsSourcePage';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/map" element={<MapPage />} />
           <Route path="/search" element={<SearchPage />} /> 
           <Route path="/settings" element={<SettingsPage />} /> 
+          <Route path="/post" element={<SinglePostView />} />
+          <Route path="/outlet" element={<NewsSourcePage />} />
         </Routes>
       </div>
     </Router>
