@@ -11,6 +11,7 @@ import SinglePostView from '../components/Misc/SinglePostView';
 import NewsSourcePage from '../components/Misc/NewsSourcePage';
 import LoginForm from '../components/Authentication/LoginForm';
 import SignupForm from '../components/Authentication/SignupForm';
+import LandingPage from '../components/Misc/LandingPage';
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
       <div className="app-layout">
         {/* Define Routes for FeedPage, MapPage, SearchPage, SettingsPage */}
         <Routes>
-          <Route path="/" element={<FeedPage />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<FeedPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/search" element={<SearchPage />} /> 
           <Route path="/settings" element={<SettingsPage />} /> 

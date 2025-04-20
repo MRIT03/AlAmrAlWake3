@@ -8,15 +8,21 @@ const PreAuthNavbar = () => {
     const navigate = useNavigate();
 
     const goToLogin = () => navigate('/login');
-    const goToSignup = () => navigate('/register');
+    const goToSignup = () => navigate('/signup');
 
   return (
     <div className='navbar-container'>
         <div className='logo-container'>
-            <img src={`${process.env.PUBLIC_URL}/navbar-logo.png`} alt="Logo" className='navlogo'/>
+          <img
+            src="/navbar-logo-khabar.png"
+            alt="Logo"
+            className="navlogo"
+            onClick={null}
+            title="Back to Home"
+          />
         </div>
-        <div className='pages-links'>
-            <button className='login-button' onClick={goToLogin} title='Login'>Log in</button>
+        <div className='pre-auth-pages-links'>
+            <button className='pre-auth-navbar-button' onClick={goToLogin} title='Login'>Log in</button>
             <button className='signup-button' onClick={goToSignup} title='Signup'>Sign up</button>
         </div> 
     </div>

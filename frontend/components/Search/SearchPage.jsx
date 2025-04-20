@@ -4,6 +4,7 @@ import './SearchPage.css';
 import SearchBar from '../Navigation/SearchBar';
 import PostElement from '../PostFeed/PostElement';
 import OutletCard from '../Misc/OutletCard';
+import PreAuthNavbar from '../Navigation/PreAuthNavbar';
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");
@@ -91,7 +92,6 @@ const SearchPage = () => {
     }
   };
   
-
   return (
     <div>
       <PostAuthNavbar />
