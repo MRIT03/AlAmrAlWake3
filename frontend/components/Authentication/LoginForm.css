@@ -8,7 +8,7 @@
   .welcome-message-login{
     font-size: 4em;
     padding-top: 30px;
-    padding-bottom: 24px;
+    padding-bottom: 12px;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
     color: #005ad4;
@@ -31,7 +31,7 @@
     background-color: white;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
-    margin-top: 24px;
+    margin-top: 28px;
     border: solid #005ad4 3px;
     border-radius: 20px;
     padding: 4px 20px;
