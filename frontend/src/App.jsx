@@ -9,6 +9,8 @@ import SearchPage from '../components/Search/SearchPage';
 import SettingsPage from '../components/Settings/SettingsPage';
 import SinglePostView from '../components/Misc/SinglePostView';
 import NewsSourcePage from '../components/Misc/NewsSourcePage';
+import LoginForm from '../components/Authentication/LoginForm';
+import SignupForm from '../components/Authentication/SignupForm';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/settings" element={<SettingsPage />} /> 
           <Route path="/post" element={<SinglePostView />} />
           <Route path="/outlet" element={<NewsSourcePage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/signup" element={<SignupForm />} />
         </Routes>
       </div>
     </Router>

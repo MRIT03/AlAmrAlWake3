@@ -1,18 +1,21 @@
 .overall-container.login{
-    background: linear-gradient(to bottom, #6E2AF5, #000);
+    background: white;
     padding-top: 70px;
-    height: 100vh;
+    height: 90vh;
+    /* width: 100%; */
   }
 
   .welcome-message-login{
     font-size: 4em;
     padding-top: 30px;
     padding-bottom: 24px;
-    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    color: #005ad4;
   }
 
-  .intro-message{
-    color: white;
+  .login-intro-message{
+    color: #0055ad;
   }
 
   .inputfields-container{
@@ -24,23 +27,51 @@
   }
 
   .authenticate-button {
+    color: #005ad4;
+    background-color: white;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    margin-top: 24px;
+    border: solid #005ad4 3px;
+    border-radius: 20px;
+    padding: 4px 20px;
+    font-size: 1.5em;
+  }
+
+  .authenticate-button:hover{
+    background-color: #000;
+    /* transform: scale(1.1); */
     color: white;
-    font-weight: 620;
+  }
+
+  .login-span{
+    color: black;
+  }
+
+  .forgot-password{
+    color: #0055ad;
+    /* color: white; */
+    margin-top: 50px;
+    font-size: 1em;
+  }
+
+  .login-back-button{
+    color: #005ad4;
+    background-color: white;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    font-style: italic;
+    border: solid #005ad4 3px;
     margin-top: 18px;
-    border: solid white 3px;
     border-radius: 20px;
     padding: 4px 20px;
     font-size: 1.3em;
   }
 
-  .authenticate-button:hover{
-    transform: scale(1.1);
-  }
-
-  .forgot-password{
+  .login-back-button:hover{
+    background-color: #000;
+    /* transform: scale(1.1); */
     color: white;
-    margin-top: 50px;
-    font-size: 1em;
   }
 
   .back-button-container.login {
@@ -48,7 +79,7 @@
     flex-direction: row;
     justify-content: start;
     align-items: start;
-    margin-left: 40px;
+    /* margin-left: 40px; */
     margin-top: -40px;
     margin-bottom: 20px;
   }

@@ -19,6 +19,15 @@ const MapSideBar = ({ newsByLoc = [] }) => {
       "admin": ""
     };
     // TO-DO Query
+    // useEffect(() => {
+  //   axios.get("http://localhost:4000/posts") // TO-DO Query Change Port Number
+  //     .then(response => {
+  //       setPosts(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error("Error fetching posts:", error);
+  //     })
+  // }, []);
     const query = new URLSearchParams(postData).toString();
     navigate(`/post?${query}`);
   };  

@@ -1,35 +1,35 @@
-  .field-container{
-    width: 29%;
-  }
+.field-container {
+  width: 50%;
+}
 
-  .input-field {
-    background: white;
-    border: 0px solid #ced4da;
-    border-radius: 12px;
-    width: 100%;
-    font-size: 1.35rem;
-    text-align: left;
-    color: #6E2AF5;
-    font-weight: 650;
-    padding-left: 12px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    margin: 10px 0;
-    transition: border-color 0.3s;
-  }
-  
-  .input-field::placeholder {
-    font-size: 1.35rem;
-    text-align: left;
-    color: #6E2AF5;
-    font-weight: 650;
-    opacity: 1;
-  }
-  
-  .input-field:focus {
-    outline: none;
-    font-size: 1.35rem;
-    text-align: left;
-    color: #000;
-    font-weight: 650;
-  }
+.input-field { 
+  background: #005ad4; /* main blue background */
+  border: 2px solid #0055ad; /* secondary blue border */
+  border-radius: 12px;
+  width: 100%;
+  font-size: 1.35rem;
+  text-align: left;
+  color: white; /* white input text */
+  font-weight: 650;
+  padding-left: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 10px 0;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-field::placeholder {
+  font-size: 1.35rem;
+  text-align: left;
+  color: white; /* soft light blue placeholder */
+  /* font-weight: 650; */
+  opacity: 1;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: white;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2); /* subtle white glow */
+  color: white;
+  font-weight: 650;
+}
