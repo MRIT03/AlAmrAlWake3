@@ -11,11 +11,12 @@
   }
   
   .signup-button {
-    border: solid #9c6ef9 4px; /*or ad87fa*/
-    border-radius: 24px;
-    background-color: #6e2af5;
+    border: solid rgb(127, 139, 207) 4px; /*or ad87fa*/
+    border-radius: 24px; 
+    background-color: #0055ad;
     color: #fff;
     margin-left: 12px;
+    margin-right: 16px;
     padding: 6px 12px;
     font-weight: 650;
     font-size: 18px;
@@ -28,6 +29,26 @@
     opacity: 0.7;
   }
 
-  .pages-links {
-    padding-right: 44px;
+  .pre-auth-navbar-links {
+    padding-right: 24px;
+  }
+
+  .pre-auth-navbar-button{
+    cursor: pointer;
+    color: #2d3879;
+    background-color: white;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 0px 16px;
+    border: 0px;
+  }
+
+  .pre-auth-navbar-button:hover{
+    cursor: pointer;
+    color: #0055ad;
+    background-color: white;
+    font-weight: bold;
+    font-size: 18.5px;
+    padding: 0px 16px;
+    border: 0px;
   }

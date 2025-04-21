@@ -6,60 +6,105 @@ import './MapView.css';
 
 const newsByLoc = [
   {
-    city: 'Beirut',
+    city: 'بيروت',
     coords: [33.8938, 35.5018],
-    headlines: ['Protests indeed continue and continue to continue to continue to Continue', 'Downtown Explosion']
+    headlines: [
+      "الأخير بسبب تأثيره السلبي على المعلمين",
+      "مصادر حكومية تؤكد أن الأزمة الحالية تتطلب حلاً فورياً لمنع تفاقم الأوضاع الاقتصادية والمعيشية"
+    ]
   },
   {
-    city: 'Tripoli',
+    city: 'طرابلس',
     coords: [34.4381, 35.8308],
-    headlines: ['Port Expansion', 'Archaeological Discovery', 'Electricity Cut']
+    headlines: [
+      "حركة مرور كثيفة عند تقاطع طريق جميل وتوصيات بإعادة تنظيم الإشارات لتفادي الحوادث",
+      "افتتاح متحف تاريخي جديد يعرض قطعاً نادرة من العهد العثماني ويجذب الزوار من كل المناطق",
+      "انقطاع تام للكهرباء في معظم أحياء طرابلس نتيجة عطل مفاجئ في محطة التغذية الرئيسية"
+    ]
   },
   {
-    city: 'Tyre',
+    city: 'صور',
     coords: [33.2700, 35.2033],
-    headlines: ['Beach Cleanup', 'Ancient Ruins Discovered']
+    headlines: [
+      "انطلقت حملة تنظيف شاملة على الشاطئ بمشاركة متطوعين من المجتمع المحلي والمدارس الرسمية",
+      "اكتشف فريق آثار دولي بقايا مدينة قديمة تضم معبداً ومقبرة ومجموعة من النقوش الحجرية"
+    ]
   },
   {
-    city: 'Sidon',
+    city: 'صيدا',
     coords: [33.5606, 35.3750],
-    headlines: ['Festival Announced']
+    headlines: [
+      "بلدية صيدا تعلن عن إقامة مهرجان ثقافي سنوي يتضمن عروضاً موسيقية ومأكولات تقليدية"
+    ]
   },
   {
-    city: 'Zahle',
+    city: 'زحلة',
     coords: [33.8947, 35.8623],
-    headlines: ['Ceasefire', 'New Parliament', 'Municipality Elections']
+    headlines: [
+      "أعلنت القوى السياسية في زحلة عن التوصل إلى اتفاق لوقف إطلاق النار بشكل دائم ونهائي",
+      "تم تشكيل برلمان محلي جديد يضم ممثلين عن جميع الفئات والطوائف في المدينة",
+      "استعدادات مكثفة لإجراء الانتخابات البلدية وسط مشاركة واسعة من الشباب والمجتمع المدني"
+    ]
   },
   {
-    city: 'Baalbek',
+    city: 'بعلبك',
     coords: [34.0058, 36.2181],
-    headlines: ['Temple Restoration', 'Cultural Week', 'Water Shortage']
+    headlines: [
+      "انطلقت أعمال ترميم معابد بعلبك الأثرية بهدف تعزيز السياحة والحفاظ على التراث الثقافي",
+      "أسبوع ثقافي مميز يشمل عروضاً موسيقية وندوات فكرية ومعارض فنية في ساحة القلعة",
+      "أزمة نقص المياه تتفاقم مع ازدياد الشكاوى من انقطاع متكرر في الأحياء السكنية"
+    ]
   },
   {
-    city: 'Jounieh',
+    city: 'جونيه',
     coords: [33.9808, 35.6171],
-    headlines: ['Concert Series', 'Traffic Reroute']
+    headlines: [
+      "تنطلق سلسلة حفلات موسيقية دولية في جونية بمشاركة فنانين من العالم العربي وأوروبا",
+      "تغييرات مفاجئة في حركة السير وإغلاق بعض الطرق لتحسين الانسياب المروري في المدينة"
+    ]
   },
   {
-    city: 'Aley',
+    city: 'عليه',
     coords: [33.8106, 35.5972],
-    headlines: ['Fire Near Forest', 'School Renovation']
+    headlines: [
+      "اندلع حريق كبير بالقرب من الغابة وتمت السيطرة عليه بمشاركة الدفاع المدني والسكان",
+      "باشرت البلدية تنفيذ مشروع ترميم المدرسة الرسمية بعد تدهور حالتها خلال السنوات الماضية"
+    ]
   },
   {
-    city: 'Nabatieh',
+    city: 'نبطية',
     coords: [33.3772, 35.4836],
-    headlines: ['New Hospital Opens']
+    headlines: [
+      "افتتاح مستشفى حديث في النبطية مجهز بأحدث التقنيات ويخدم عدداً كبيراً من القرى المجاورة"
+    ]
   },
   {
-    city: 'Byblos',
+    city: 'جبيل',
     coords: [34.1230, 35.6519],
-    headlines: ['Tourist Boom', 'Harbor Restoration', 'Local Elections', 'Heritage Festival']
+    headlines: [
+      "سجلت جبيل ارتفاعاً ملحوظاً في عدد السياح مع ازدياد الحجوزات في الفنادق والمطاعم المحلية",
+      "تستمر أعمال ترميم مرفأ جبيل التاريخي لتحسين قدرته على استقبال القوارب والزوار",
+      "انطلقت الحملات الانتخابية المحلية وسط منافسة قوية بين المرشحين ودعوات للشفافية",
+      "يُقام مهرجان التراث في جبيل بمشاركة فرق فلكلورية ومعارض تعكس تاريخ المدينة العريق"
+    ]
   }
 ];
 
 const MapView = () => {
 
+  // const [newsByLoc, setNewsByLoc] = useState([]); 
   const [selectedLoc, setSelectedLoc] = useState(null);
+
+  // TO-DO Query
+  // useEffect(() => {
+  //   axios.get('http://localhost:4000/newsByLoc')
+  //     .then(response => {
+  //       setNewsByLoc(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error("Error fetching location-based news:", error);
+  //     });
+  // }, []);
 
   const handleMarkerClick = (loc) => {
     setSelectedLoc(loc);
@@ -69,8 +114,13 @@ const MapView = () => {
 
   return (
     <div style={{ display: 'flex' }}>
-        <MapContainer newsByLoc={newsByLoc} center={[33.8547, 35.8623]} zoom={8} onMarkerClick={handleMarkerClick}/> {/* centered at lebanon*/}
-        <MapSideBar newsByLoc={filteredNews} />    
+      <MapContainer 
+        newsByLoc={newsByLoc} 
+        center={[33.8547, 35.8623]} 
+        zoom={8} 
+        onMarkerClick={handleMarkerClick}
+      />
+      <MapSideBar newsByLoc={filteredNews} />    
     </div>
   );
 };

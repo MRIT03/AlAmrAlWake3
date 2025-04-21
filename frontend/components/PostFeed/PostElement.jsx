@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import './PostElement.css';
 import PostUpperPart from "./PostUpperPart";
 import PostBottomBar from "./PostBottomBar";
+import AdminBottomBar from "../Admin/AdminBottomBar";
 
 const PostElement = ({postData}) => {
 

@@ -1,0 +1,40 @@
+.landing-page-content {
+    margin-top: 5rem;
+    text-align: center;
+    padding: 0 2rem;
+}
+
+.primary-blue {
+    color: #0056b3; /* Deep Blue */
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.secondary-blue {
+    color: #3b82f6; /* Lighter blue */
+    font-size: 2rem;
+    margin-top: 1rem;
+    font-weight: 500;
+}
+
+.landing-description {
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    color: #333;
+}
+
+.get-started-btn {
+    margin-top: 2rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.get-started-btn:hover {
+    background-color: #004494;
+}

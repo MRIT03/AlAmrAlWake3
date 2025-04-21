@@ -6,11 +6,10 @@ import { useNavigate } from 'react-router-dom';
 const PostAuthNavbar = () => {
   const navigate = useNavigate();
 
-  const goToHome = () => navigate('/'); // FeedPage route
-  const goToFeed = () => navigate('/'); // This is assuming FeedPage is at '/'
-  const goToSearch = () => navigate('/search'); // Assuming search page is at '/search'
-  const goToMap = () => navigate('/map'); // Assuming map page is at '/map'
-  const goToSettings = () => navigate('/settings'); // Assuming settings page is at '/settings'
+  const goToHome = () => navigate('/home');
+  const goToSearch = () => navigate('/search'); 
+  const goToMap = () => navigate('/map'); 
+  const goToSettings = () => navigate('/settings'); 
 
   return (
     <div className="navbar-container">
@@ -24,7 +23,7 @@ const PostAuthNavbar = () => {
         />
       </div>
       <div className="post-auth-navbar-links">
-        <button className="post-auth-navbar-button" onClick={goToFeed} title="Feed">
+        <button className="post-auth-navbar-button" onClick={goToHome} title="Feed">
           Feed
         </button>
         <button className="post-auth-navbar-button" onClick={goToMap} title="Map">

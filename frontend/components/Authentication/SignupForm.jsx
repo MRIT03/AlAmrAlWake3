@@ -3,7 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import AuthField from './AuthField';
 import './SignupForm.css'; 
 import { useNavigate } from 'react-router-dom';
-
+ 
 const SignupForm = ({ }) => {
     
   const [username, setUsername] = useState("");
@@ -68,10 +68,10 @@ const SignupForm = ({ }) => {
   return (
     <div className='overall-container signup'>
         <div className='back-button-container signup'>
-          <button className='back-button' title='Back to Beatopia' onClick={backToLanding}>← Back to Beatopia</button>
+          <button className='back-button' title='Back to Beatopia' onClick={backToLanding}>← Back to Main</button>
         </div>
-          <h1 className='welcome-message'>Welcome to <b>Beatopia</b></h1>
-          <h4 className='intro-message'>Let's first create an account for you :</h4>
+          <h1 className='welcome-message'><span className='login-span'>Ahlan!</span> Welcome to <span className='login-span'>khabar</span>.lb</h1>
+          {/* <h4 className='intro-message'>Let's first create an account for you :</h4> */}
           <div className="inputfields-container">
                 <AuthField type={"text"} placeholder={"Username"} value={username} onChange={handleUsernameInput}/>
                 <AuthField type={"text"} placeholder={"Email Address"} value={email} onChange={handleEmailInput}/>

@@ -1,70 +1,93 @@
-  .overall-container.signup{
-    background: linear-gradient(to bottom, #6E2AF5, #000);
-    padding-top: 70px;
-    height: 100vh;
-  }
+.overall-container.signup {
+  background: white;
+  padding-top: 50px;
+  height: 90vh;
+}
 
-  .welcome-message{
-    font-size: 4em;
-    padding-top: 30px;
-    padding-bottom: 32px;
-    color: white;
-  }
+.welcome-message {
+  font-size: 4em;
+  padding-top: 18px;
+  padding-bottom: 6px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  color: #005ad4;
+}
 
-  .intro-message{
-    color: white;
-  }
+.intro-message {
+  color: #0055ad;
+}
 
-  .inputfields-container{
-    margin-top: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+.login-span{
+  color: black;
+}
 
-  .submit-button {
-    color: white;
-    font-weight: 620;
-    margin-top: 18px;
-    border: solid white 3px;
-    border-radius: 20px;
-    padding: 4px 20px;
-    font-size: 1.3em;
-  }
+.inputfields-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-  .submit-button:hover{
-    transform: scale(1.1);
-  }
+.submit-button {
+  color: #005ad4;
+  background-color: white;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  margin-top: 24px;
+  border: solid #005ad4 3px;
+  border-radius: 20px;
+  padding: 4px 20px;
+  font-size: 1.5em;
+}
 
-  .back-button {
-    color: white;
-    font-weight: 620;
-    margin-top: 1px;
-    border: solid white 3px;
-    border-radius: 20px;
-    padding: 4px 20px;
-    font-size: 1em;
-  }
+.submit-button:hover{
+  background-color: #000;
+  /* transform: scale(1.1); */
+  color: white;
+}
 
-  .back-button:hover{
-    transform: scale(1.1);
-  }
+.back-button {
+  color: #005ad4;
+  background-color: white;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  font-style: italic;
+  border: solid #005ad4 3px;
+  margin-top: 0px;
+  border-radius: 20px;
+  padding: 4px 20px;
+  font-size: 1.3em;
+}
 
-  .back-button-container.signup {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: start;
-    margin-left: 40px;
-    margin-top: -40px;
-    margin-bottom: -10px;
-  }
+.back-button:hover {
+  background-color: #000;
+  /* transform: scale(1.1); */
+  color: white;
+}
 
-  .loading-text {
-    color: blue; /* Change to your desired color */
-    font-weight: bold;
-    font-size: 16px; /* Adjust size if needed */
-    text-align: center;
-  }
-  
+.back-button-container.signup {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: start;
+  margin-top: -40px;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  color: red; 
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.loading-text {
+  color: blue;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}

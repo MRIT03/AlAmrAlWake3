@@ -42,13 +42,13 @@ const LoginForm = () => {
 
   const backToLanding = () => navigate('/');
 
-  return (
+  return ( 
     <div className='overall-container login'>
         <div className='back-button-container login'>
-          <button className='back-button' title='Back to Beatopia' onClick={backToLanding}>← Back to Beatopia</button>
+          <button className='login-back-button' title='Back' onClick={backToLanding}>← Back to Main</button>
         </div>
-        <h1 className='welcome-message-login'>Welcome back to <b>Beatopia</b></h1>
-        <h4 className='intro-message'>We bet you've missed your mixes :)</h4>
+        <h1 className='welcome-message-login'>Welcome back to <span className='login-span'>khabar</span>.lb</h1>
+        {/* <h4 className='login-intro-message'>Latest Lebanese news in one place!</h4> */}
         <div className="inputfields-container">
               <AuthField type={"text"} placeholder={"Username or email address"} value={loginText} onChange={handleLoginTextInput}/>
               <AuthField type={"password"} placeholder={"Enter your password"} value={password} onChange={handlePasswordInput}/>

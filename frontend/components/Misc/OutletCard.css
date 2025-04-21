@@ -1,0 +1,38 @@
+.outlet-card-wrapper{
+    border-radius: 20px;
+    padding: 10px 30px;
+    background-color: #fff; /* Or whatever fits your theme */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    border: none; /* Remove thick border */
+    margin-top: 36px;
+    margin-bottom: 36px;
+    transition: box-shadow 0.3s ease;
+}
+
+.outlet-side-bar-wrapper{
+    border-right: 0px solid rgba(0, 0, 0, 0.1);
+    padding-left: 6px;
+    margin-right: 10px;
+}
+
+.outlet-follow-toggle-btn {
+    margin-top: 16px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.outlet-follow-toggle-btn.following {
+    background-color: #4351a0;
+    color: white;
+    border-color: #4351a0;
+}
+
+.outlet-follow-toggle-btn.not-following {
+    background-color: transparent;
+    color: #4351a0;
+    border: 2px solid #4351a0;
+}
