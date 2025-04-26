@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:asp": "cross-env vite build --outDir ../backend/Main/Main/wwwroot/app --emptyOutDir",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -24,6 +25,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "cross-env": "^7.0.3",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
