@@ -6,6 +6,8 @@ const OutletCard = ({ sourceName, SRR, followingStatus }) => {
 
     const [isFollowing, setIsFollowing] = useState(followingStatus);
 
+    // TO-DO Command #B
+
     const generateStars = (SRR) => {
         const stars = [];
         const doubledRating = Math.floor(SRR*2);

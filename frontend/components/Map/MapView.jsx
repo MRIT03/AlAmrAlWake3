@@ -95,7 +95,7 @@ const MapView = () => {
   // const [newsByLoc, setNewsByLoc] = useState([]); 
   const [selectedLoc, setSelectedLoc] = useState(null);
 
-  // TO-DO Query
+  // TO-DO Query #2
   // useEffect(() => {
   //   axios.get('http://localhost:4000/newsByLoc')
   //     .then(response => {

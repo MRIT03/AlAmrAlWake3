@@ -55,6 +55,8 @@ const PostElement = ({postData}) => {
     });
   };
 
+  // TO-DO Command #C
+
   return (
     <div className="post-element">
       <PostUpperPart 

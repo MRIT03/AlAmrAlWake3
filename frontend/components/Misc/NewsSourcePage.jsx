@@ -10,38 +10,44 @@ const NewsSourcePage = () => {
     const queryParams = new URLSearchParams(location.search);
     const sourceNameFromQuery = queryParams.get("source");
 
-    const [sourceInfo, setSourceInfo] = useState(null);
     const [isFollowing, setIsFollowing] = useState(false);
 
-    useEffect(() => {
+    // TO-DO Command #B
+
+    useEffect(() => { // To-DO Query #3
         if (sourceNameFromQuery) {
-            const fetchSourceInfo = async () => {
-                // TO-DO Query: Replace with actual API call
-                // const res = await fetch(`/api/news-source?name=${sourceNameFromQuery}`);
-                // const data = await res.json();
+            const fetchIsFollowing = async () => {
+                try {
+                    const res = await fetch(`/api/following/check?sourceName=${encodeURIComponent(sourceNameFromQuery)}`, {
+                        method: 'GET',
+                        // credentials: 'include', // Uncomment this if authentication (like cookies or tokens) is set up later
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
 
-                // Simulated data
-                const data = {
-                    isFollowing: true,
-                    sourceName: sourceNameFromQuery,
-                    SRR: 3.6,
-                    headlines: [
-                        'Protests indeed continue and continue to continue to continue to Continue',
-                        'Downtown Explosion'
-                    ]
-                };
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                    }
 
-                setSourceInfo(data);
-                setIsFollowing(data.isFollowing);
+                    const data = await res.json();
+
+                    setIsFollowing(data.isFollowing);
+                } catch (error) {
+                    console.error('Error fetching follow status:', error);
+                }
             };
 
-            fetchSourceInfo();
+            /* 
+            Notes:
+            - Assumption: API base URL is same as frontend server or proxied (no port specified).
+            - If backend runs on a different port (e.g., localhost:5000), set up a proxy in package.json or change the fetch URL.
+            - Authentication is not yet implemented, so 'credentials: include' is commented out for now.
+            */
+    
+            fetchIsFollowing();
         }
-    }, [sourceNameFromQuery]);
-
-    if (!sourceInfo) {
-        return <div className="news-source-page-wrapper">Loading...</div>;
-    }
+    }, [sourceNameFromQuery]);    
 
     return (
         <div className="news-source-page-wrapper">
@@ -49,7 +55,7 @@ const NewsSourcePage = () => {
 
             <div className='outlet-container'>
                 <i className="bi bi-newspaper news-source-page-avatar"></i>
-                <h4 className='news-outlet-name'>{sourceInfo.sourceName}</h4>
+                <h4 className='news-outlet-name'>{sourceNameFromQuery}</h4>
 
                 <button
                     className={`follow-toggle-btn ${isFollowing ? 'following' : 'not-following'}`}
@@ -59,7 +65,7 @@ const NewsSourcePage = () => {
                 </button>
             </div>
 
-            <PostFeed /> {/* TODO: Pass filtered list based on source */}
+            <PostFeed /> {/* TODO: outletFilter = true */}
         </div>
     );
 };
