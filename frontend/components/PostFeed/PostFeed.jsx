@@ -3,11 +3,11 @@ import axios from "axios";
 import './PostFeed.css';
 import PostElement from './PostElement';
 
-const PostFeed = () => {
+const PostFeed = ({ filterOutlet = false }) => {
   const [posts, setPosts] = useState([]);
 
   // useEffect(() => {
-  //   axios.get("http://localhost:4000/posts") // TO-DO Query Change Port Number
+  //   axios.get("http://localhost:4000/posts") // 
   //     .then(response => {
   //       setPosts(response.data);
   //     })
@@ -16,6 +16,13 @@ const PostFeed = () => {
   //     })
   // }, []);
   
+  // if(!filterOutlet){ TO-DO Query #4 Change Port Number
+  //   useEffect(() => {})
+  // }
+  // else{ TO-DO Query #5 Change Port Number
+
+  // }
+
   useEffect(() => { // MANUAL FETCHING FROM POSTS.JSON
     fetch('/posts.json')
       .then(res => {
