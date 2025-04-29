@@ -5,63 +5,86 @@ import PostFeed from "../PostFeed/PostFeed";
 import PostAuthNavbar from "../Navigation/PostAuthNavbar";
 import { useLocation } from "react-router-dom";
 
+// point this at your backend (or "" if you use a CRA proxy)
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5120";
+
 const NewsSourcePage = () => {
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const sourceNameFromQuery = queryParams.get("source");
+  const location = useLocation();
+  const sourceNameFromQuery = new URLSearchParams(location.search).get("source");
 
-    const [sourceInfo, setSourceInfo] = useState(null);
-    const [isFollowing, setIsFollowing] = useState(false);
+  // TODO: pull real userId & real sourceId mapping here
+  const userId   = 1;
+  const sourceId = 42;
 
-    useEffect(() => {
-        if (sourceNameFromQuery) {
-            const fetchSourceInfo = async () => {
-                // TO-DO Query: Replace with actual API call
-                // const res = await fetch(`/api/news-source?name=${sourceNameFromQuery}`);
-                // const data = await res.json();
+  const [sourceInfo, setSourceInfo]   = useState(null);
+  const [isFollowing, setIsFollowing] = useState(false);
 
-                // Simulated data
-                const data = {
-                    isFollowing: true,
-                    sourceName: sourceNameFromQuery,
-                    SRR: 3.6,
-                    headlines: [
-                        'Protests indeed continue and continue to continue to continue to Continue',
-                        'Downtown Explosion'
-                    ]
-                };
+  // fetch initial follow state
+  useEffect(() => {
+    if (!sourceNameFromQuery) return;
 
-                setSourceInfo(data);
-                setIsFollowing(data.isFollowing);
-            };
+    const fetchFollowState = async () => {
+      try {
+        const url = `${API_BASE_URL}/api/User/FollowsSource?userId=${userId}&sourceId=${sourceId}`;
+        const res = await fetch(url, { method: "GET" });
 
-            fetchSourceInfo();
+        if (!res.ok) {
+          console.error("Error fetching follow state:", res.statusText);
+          return;
         }
-    }, [sourceNameFromQuery]);
 
-    if (!sourceInfo) {
-        return <div className="news-source-page-wrapper">Loading...</div>;
+        const follows = await res.json(); // true|false
+        setSourceInfo({ sourceName: sourceNameFromQuery });
+        setIsFollowing(follows);
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+    };
+
+    fetchFollowState();
+  }, [sourceNameFromQuery, userId, sourceId]);
+
+  // call this when the user clicks "Follow"
+  const handleFollow = async () => {
+    if (isFollowing) return;  // do nothing if already following
+
+    try {
+      const url = `${API_BASE_URL}/api/User/Follow?userId=${userId}&sourceId=${sourceId}`;
+      const res = await fetch(url, { method: "POST" });
+
+      if (res.ok) {
+        setIsFollowing(true);
+      } else {
+        console.error("Failed to follow:", res.status, res.statusText);
+      }
+    } catch (err) {
+      console.error("Follow error:", err);
     }
+  };
 
-    return (
-        <div className="news-source-page-wrapper">
-            <PostAuthNavbar />
+  if (!sourceInfo) {
+    return <div className="news-source-page-wrapper">Loading...</div>;
+  }
 
-            <div className='outlet-container'>
-                <i className="bi bi-newspaper news-source-page-avatar"></i>
-                <h4 className='news-outlet-name'>{sourceInfo.sourceName}</h4>
+  return (
+    <div className="news-source-page-wrapper">
+      <PostAuthNavbar />
 
-                <button
-                    className={`follow-toggle-btn ${isFollowing ? 'following' : 'not-following'}`}
-                    onClick={() => setIsFollowing(prev => !prev)}
-                >
-                    {isFollowing ? 'Following' : 'Follow'}
-                </button>
-            </div>
+      <div className="outlet-container">
+        <i className="bi bi-newspaper news-source-page-avatar"></i>
+        <h4 className="news-outlet-name">{sourceInfo.sourceName}</h4>
 
-            <PostFeed /> {/* TODO: Pass filtered list based on source */}
-        </div>
-    );
+        <button
+          className={`follow-toggle-btn ${isFollowing ? 'following' : 'not-following'}`}
+          onClick={handleFollow}
+        >
+          {isFollowing ? 'Following' : 'Follow'}
+        </button>
+      </div>
+
+      <PostFeed /> {/* TODO: filter posts by source */}
+    </div>
+  );
 };
 
 export default NewsSourcePage;

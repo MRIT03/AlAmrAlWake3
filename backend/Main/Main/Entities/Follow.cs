@@ -11,9 +11,6 @@ public class Follow
     [Column(TypeName = "date")]
     public DateTime FollowDate { get; set; }
 
-    [Column(TypeName = "time")]
-    public TimeSpan FollowTime { get; set; }
-
     // Foreign keys
     public int UserId { get; set; }
     public User User { get; set; }
