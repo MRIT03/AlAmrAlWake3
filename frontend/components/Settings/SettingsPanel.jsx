@@ -7,6 +7,8 @@ import axios from 'axios';
 
 const SettingsPanel = ({givenUsername}) => {
 
+    // TO-DO Command #D
+
     const [oldPasswordConfirmed, setOldPasswordConfirmed] = useState(false); 
     
     const [username, setUsername] = useState('');

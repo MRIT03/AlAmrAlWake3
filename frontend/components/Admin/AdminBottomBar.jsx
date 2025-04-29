@@ -3,6 +3,9 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './AdminBottomBar.css';
 
 const AdminBottomBar = ({ counters, onReact, selectedReaction, oneHourPassed }) => {
+
+    // TO-DO Command #A
+
     const reactions = [
         { icon: "hand-thumbs-up", fillIcon: "hand-thumbs-up-fill", label: "Like", color: "blue", counter: counters[0] },
         { icon: "heart", fillIcon: "heart-fill", label: "Love", color: "purple", counter: counters[1] },

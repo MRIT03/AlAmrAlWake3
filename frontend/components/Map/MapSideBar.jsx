@@ -18,9 +18,9 @@ const MapSideBar = ({ newsByLoc = [] }) => {
       "dateTime": "4/18/2025 15:53",
       "admin": ""
     };
-    // TO-DO Query
+    // TO-DO Query #1
     // useEffect(() => {
-  //   axios.get("http://localhost:4000/posts") // TO-DO Query Change Port Number
+  //   axios.get("http://localhost:4000/posts") // TO-DO Query #1 Change Port Number
   //     .then(response => {
   //       setPosts(response.data);
   //     })
@@ -36,8 +36,49 @@ const MapSideBar = ({ newsByLoc = [] }) => {
     <div className="map-sidebar"> {/* Container for the sidebar */}
       
       {/* Title of the Sidebar */}
-      <h3 className='map-sidebar-title'>📰 Latest News by Location</h3>
+      {/* <h3 className='map-sidebar-title'>📰 Latest News by Location</h3> */}
+
       
+      <div className="d-flex justify-content" style={{ gap: '1rem'}}>
+      {/* First Dropdown */}
+      <div className="dropdown custom-dropdown">
+        <button
+          className="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Recent
+        </button>
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a className="dropdown-item" href="#">Last 24 hrs</a></li>
+          <li><a className="dropdown-item" href="#">Last 7 days</a></li>
+          {/* <li><a className="dropdown-item" href="#">Something else</a></li> */}
+        </ul>
+      </div>
+
+      {/* Second Dropdown */}
+      <div className="dropdown custom-dropdown">
+        <button
+          className="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton2"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Following
+        </button>
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+          <li><a className="dropdown-item" href="#">All</a></li>
+          <li><a className="dropdown-item" href="#">Following</a></li>
+          {/* <li><a className="dropdown-item" href="#">Option C</a></li> */}
+        </ul>
+      </div>
+    </div>
+
+      {/* TRIAL ZONE */}
+
       {/* List of news headlines */}
       <div className="headline-list">
         {newsByLoc.map((loc, index) => (

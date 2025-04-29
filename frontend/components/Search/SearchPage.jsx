@@ -18,10 +18,16 @@ const SearchPage = () => {
       setSearched(true);
 
       if (query.trim().startsWith("@")) {
-        // TO-DO Query
+        // TO-DO Query #6
         const fakeOutlets = [
-          { id: 1, sourceName: "MTV", SRR: 4.2, followingStatus: true },
-          { id: 2, sourceName: "OTV", SRR: 3.5, followingStatus: false},
+          { sourceName: "MTV", 
+            SRR: 4.2, 
+            followingStatus: true 
+          },
+          { sourceName: "OTV", 
+            SRR: 3.5, 
+            followingStatus: false
+          },
         ];
         const filtered = fakeOutlets.filter(outlet =>
           outlet.sourceName.toLowerCase().includes(query.substring(1).toLowerCase())
@@ -29,7 +35,7 @@ const SearchPage = () => {
         setResourceResults(filtered);
         setPostResults([]); 
       } else {
-        // TO-DO Query
+        // TO-DO Query #7
         const fakePosts = [
           {
             "city": "Beirut",

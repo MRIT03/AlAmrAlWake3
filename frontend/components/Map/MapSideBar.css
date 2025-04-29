@@ -73,3 +73,20 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.custom-dropdown {
+  margin: 10px 0px; 
+  padding: 5px;    
+}
+
+.custom-dropdown .btn {
+  padding: 8px 20px;  
+  background-color: #0055ad;
+  border-radius: 20px;
+}
+
+.custom-dropdown .dropdown-menu {
+  padding: 10px;
+  margin-top: 8px;    
+  background-color: #f9f9f9;
+}
