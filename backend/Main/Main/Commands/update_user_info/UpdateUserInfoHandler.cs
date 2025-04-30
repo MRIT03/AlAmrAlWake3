@@ -1,11 +1,11 @@
-using FinalLab.Application.Commands;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 using Main.Data.Contexts;
+using Main.Commands;
 
-namespace FinalLab.Application.Handlers
+namespace Main.Handlers
 {
     public class UpdateUserInfoCommandHandler : IRequestHandler<UpdateUserInfoCommand>
     {

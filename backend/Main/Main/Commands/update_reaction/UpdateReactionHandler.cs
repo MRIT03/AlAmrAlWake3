@@ -1,4 +1,4 @@
-using FinalLab.Application.Commands;
+using Main.Commands;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
@@ -7,7 +7,7 @@ using Main.Commands;
 using Main.Data.Contexts;
 using Main.Entities;
 
-namespace FinalLab.Application.Handlers
+namespace Main.Handlers
 {
     public class AddOrUpdateReactionCommandHandler : IRequestHandler<UpdateReactionCommand>
     {

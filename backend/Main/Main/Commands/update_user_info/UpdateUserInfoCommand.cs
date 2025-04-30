@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace FinalLab.Application.Commands
+namespace Main.Commands
 {
     public class UpdateUserInfoCommand : IRequest
     {
