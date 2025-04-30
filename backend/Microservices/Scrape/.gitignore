@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+
+# Environment variables
+.env
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+
+# VSCode / IDE settings
+.vscode/
+.idea/
+*.swp
+
+# Coverage / testing
+htmlcov/
+.coverage
+.tox/
+.noseids
+.pytest_cache/
+.coverage.*
+
+# Migrations
+*/migrations/__pycache__/
+*/migrations/*.pyc
+*/migrations/*.pyo
+*/migrations/*.py~
+
+# Tavily results / temp files
+scraped_articles.json
+vector_db/
+
+# OS files
+.DS_Store
+Thumbs.db
