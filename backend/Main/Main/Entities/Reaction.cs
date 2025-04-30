@@ -16,6 +16,7 @@ public class Reaction
 
     [Required, MaxLength(50)]
     public string ReactionType { get; set; }
+    public bool IsFlagged { get; set; }
 
     // Foreign keys
     public int UserId { get; set; }
