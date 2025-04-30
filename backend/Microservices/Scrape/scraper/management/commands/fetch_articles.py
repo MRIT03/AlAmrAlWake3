@@ -48,3 +48,8 @@ class Command(BaseCommand):
                     self.stderr.write(f"Skipped duplicate or error: {e}")
 
         self.stdout.write(self.style.SUCCESS("Finished fetching articles."))
+
+        import subprocess
+        subprocess.run(["python", "push_to_vector_db.py"])
+        self.stdout.write(self.style.SUCCESS("Vector DB updated with new articles."))
+
