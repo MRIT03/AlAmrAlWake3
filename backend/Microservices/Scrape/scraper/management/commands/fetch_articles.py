@@ -3,6 +3,21 @@ from scraper.tavily_client import query_tavily
 from scraper.models import Article, Log
 from django.utils import timezone
 
+# List of known homepage/section URL patterns to skip
+HOMEPAGE_PREFIXES = [
+    "https://www.mtv.com.lb/en/",
+    "https://www.mtv.com.lb/",
+    "https://www.lebanon24.com/",
+    "https://otv.com.lb/",
+    "https://www.lbcgroup.tv/",
+    "https://english.almanar.com.lb/",
+    "https://almanar.com.lb/",
+    "https://www.elnashra.com/",
+    "https://www.annahar.com/",
+    "https://www.nna-leb.gov.lb/",
+    "https://www.aljazeera.com/where/lebanon"
+]
+
 class Command(BaseCommand):
     help = "Fetches articles from Tavily and stores them in the database."
 
@@ -19,7 +34,6 @@ class Command(BaseCommand):
             "site:aljazeera.com Lebanon"
         ]
 
-
         for query in queries:
             self.stdout.write(f"🔍 Fetching: {query}")
             try:
@@ -35,13 +49,19 @@ class Command(BaseCommand):
             )
 
             for article_data in results:
+                url = article_data["url"]
+                # Skip if the URL matches a known homepage or category URL
+                if any(url.startswith(prefix) for prefix in HOMEPAGE_PREFIXES):
+                    self.stdout.write(f"Skipped (homepage or category): {url}")
+                    continue
+
                 try:
                     Article.objects.create(
                         log=log,
                         title=article_data["title"],
-                        url=article_data["url"],
+                        url=url,
                         content=article_data.get("content", ""),
-                        source=article_data["url"].split('/')[2]
+                        source=url.split('/')[2]
                     )
                     self.stdout.write(f"Saved: {article_data['title']}")
                 except Exception as e:
@@ -49,7 +69,7 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS("Finished fetching articles."))
 
+        # Automatically push to vector DB
         import subprocess
         subprocess.run(["python", "push_to_vector_db.py"])
         self.stdout.write(self.style.SUCCESS("Vector DB updated with new articles."))
-

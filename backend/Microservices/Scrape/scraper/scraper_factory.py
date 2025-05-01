@@ -1,4 +1,4 @@
-from .scrapers.almanar_scraper import AlManarScraper
+# from .scrapers.almanar_scraper import AlManarScraper
 # from .scrapers.mtv_scraper import MtvScraper
 # Import more as needed...
 

@@ -40,6 +40,10 @@ def should_index_article(url, content):
         "https://www.aljazeera.com/"
     ]
 
+    # Block common category slugs
+    blocklist = ["news", "international", "articles", "breaking-news",
+                 "category", "politics", "latest-news", "bulletins"]
+
     # EXCLUDE if exact homepage
     for homepage in homepage_prefixes:
         if url.rstrip("/").lower() == homepage.rstrip("/").lower():
@@ -49,14 +53,19 @@ def should_index_article(url, content):
     if len(content.strip()) < 100:
         return False
 
-    # INCLUDE if numeric ID present (5+ digits to avoid years like 2025)
+    # INCLUDE if numeric ID present
     import re
     if re.search(r"\d{5,}", url):
         return True
 
-    # INCLUDE if URL ends with a long-enough slug (indicates article)
-    # Example: /news/president-calls-for-change
-    slug = url.rstrip("/").split("/")[-1]
+    # Check slug
+    slug = url.rstrip("/").split("/")[-1].lower()
+
+    # EXCLUDE if slug matches any blocklist term
+    if slug in blocklist:
+        return False
+
+    # INCLUDE if slug is long and not purely numeric
     if len(slug) > 10 and not slug.isdigit():
         return True
 
