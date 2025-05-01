@@ -37,4 +37,4 @@ docs = [
 
 vector_store.add_documents(docs)
 
-print(f"✅ Pushed {len(docs)} articles to ../LLMProject/vector_db")
+print(f"Pushed {len(docs)} articles to ../LLMProject/vector_db")
