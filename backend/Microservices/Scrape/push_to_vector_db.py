@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.documents import Document
+import re
 
 # Django setup
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
@@ -26,14 +27,51 @@ vector_store = Chroma(
     embedding_function=embedding
 )
 
-# Prepare documents
-docs = [
-    Document(
-        page_content=a.content,
-        metadata={"title": a.title, "url": a.url, "source": a.source}
-    )
-    for a in Article.objects.all()
-]
+### NEW: Filtering function ###
+def should_index_article(url, content):
+    homepage_prefixes = [
+        "https://www.mtv.com.lb/",
+        "https://www.lebanon24.com/",
+        "https://www.otv.com.lb/",
+        "https://www.lbcgroup.tv/",
+        "https://www.almanar.com.lb/",
+        "https://www.elnashra.com/",
+        "https://www.annahar.com/",
+        "https://www.nna-leb.gov.lb/",
+        "https://www.aljazeera.com/"
+    ]
+
+    for homepage in homepage_prefixes:
+        if url.rstrip("/").lower() == homepage.rstrip("/").lower():
+            return False
+
+    if len(content.strip()) < 100:
+        return False
+
+    keywords = ["/news/", "/article", "/program/"]
+    if any(keyword in url.lower() for keyword in keywords):
+        return True
+
+    if re.search(r"\d{5,}", url):
+        return True
+
+    return False
+
+### NEW: Apply filter ###
+docs = []
+for a in Article.objects.all():
+    url = a.url
+    content = a.content
+
+    if should_index_article(url, content):
+        docs.append(
+            Document(
+                page_content=content,
+                metadata={"title": a.title, "url": url, "source": a.source}
+            )
+        )
+    else:
+        print(f"Skipped: {url}")
 
 vector_store.add_documents(docs)
 
