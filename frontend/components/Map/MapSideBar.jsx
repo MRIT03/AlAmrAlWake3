@@ -6,7 +6,7 @@ import './MapSideBar.css';
 const MapSideBar = () => {
   const navigate = useNavigate();
   const [newsByLoc, setNewsByLoc] = useState([]);
-
+  // TO-DO, pass the two filters values to the useEffect method querying for news
   useEffect(() => {
     axios.get('http://localhost:5120/api/Posts/')
       .then(response => {
@@ -29,7 +29,43 @@ const MapSideBar = () => {
 
   return (
     <div className="map-sidebar">
-      {/* …dropdowns omitted for brevity… */}
+      <div className="d-flex justify-content" style={{ gap: '1rem'}}>
+      {/* First Dropdown */}
+        <div className="dropdown custom-dropdown">
+          <button
+            className="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Recent
+          </button>
+          <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a className="dropdown-item" href="#">Last 24 hrs</a></li>
+            <li><a className="dropdown-item" href="#">Last 7 days</a></li>
+            {/* <li><a className="dropdown-item" href="#">Something else</a></li> */}
+          </ul>
+        </div>
+
+        {/* Second Dropdown */}
+        <div className="dropdown custom-dropdown">
+          <button
+            className="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton2"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Following
+          </button>
+          <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <li><a className="dropdown-item" href="#">All</a></li>
+            <li><a className="dropdown-item" href="#">Following</a></li>
+            {/* <li><a className="dropdown-item" href="#">Option C</a></li> */}
+          </ul>
+        </div>
+      </div>
 
       <div className="headline-list">
         {newsByLoc?.map((loc, idx) => (
