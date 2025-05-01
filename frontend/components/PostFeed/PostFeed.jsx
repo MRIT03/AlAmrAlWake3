@@ -6,19 +6,19 @@ import PostElement from './PostElement';
 const PostFeed = ({ filterOutlet = false }) => {
   const [posts, setPosts] = useState([]);
 
-  // useEffect(() => {
-  //   axios.get("http://localhost:4000/posts") // 
-  //     .then(response => {
-  //       setPosts(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error("Error fetching posts:", error);
-  //     })
-  // }, []);
+  useEffect(() => {
+    axios.get("http://localhost:5120/api/Posts/GetFeedPosts") // 
+      .then(response => {
+        setPosts(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching posts:", error);
+      })
+  }, []);
   
-  // if(!filterOutlet){ TO-DO Query #4 Change Port Number
-  //   useEffect(() => {})
-  // }
+  if(!filterOutlet){ 
+    useEffect(() => {})
+  }
   // else{ TO-DO Query #5 Change Port Number
 
   // }
