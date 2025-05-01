@@ -27,7 +27,6 @@ vector_store = Chroma(
     embedding_function=embedding
 )
 
-### NEW: Filtering function ###
 def should_index_article(url, content):
     homepage_prefixes = [
         "https://www.mtv.com.lb/",
@@ -41,18 +40,24 @@ def should_index_article(url, content):
         "https://www.aljazeera.com/"
     ]
 
+    # EXCLUDE if exact homepage
     for homepage in homepage_prefixes:
         if url.rstrip("/").lower() == homepage.rstrip("/").lower():
             return False
 
+    # EXCLUDE if content is too short
     if len(content.strip()) < 100:
         return False
 
-    keywords = ["/news/", "/article", "/program/"]
-    if any(keyword in url.lower() for keyword in keywords):
+    # INCLUDE if numeric ID present (5+ digits to avoid years like 2025)
+    import re
+    if re.search(r"\d{5,}", url):
         return True
 
-    if re.search(r"\d{5,}", url):
+    # INCLUDE if URL ends with a long-enough slug (indicates article)
+    # Example: /news/president-calls-for-change
+    slug = url.rstrip("/").split("/")[-1]
+    if len(slug) > 10 and not slug.isdigit():
         return True
 
     return False
