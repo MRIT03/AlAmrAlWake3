@@ -25,17 +25,17 @@ namespace Main.Handlers
             FetchSearchResultsQuery request,
             CancellationToken cancellationToken)
         {
-            // 1) Get user role once
-            var userRole = await _context.Users
-                .Where(u => u.UserId == request.UserId)
-                .Select(u => u.UserRole)
-                .FirstOrDefaultAsync(cancellationToken);
+            // // 1) Get user role once
+            // var userRole = await _context.Users
+            //     .Where(u => u.UserId == request.UserId)
+            //     .Select(u => u.UserRole)
+            //     .FirstOrDefaultAsync(cancellationToken);
 
-            bool isAdmin = string.Equals(
-                userRole,
-                "Admin",
-                StringComparison.OrdinalIgnoreCase
-            );
+            // bool isAdmin = string.Equals(
+            //     userRole,
+            //     "Admin",
+            //     StringComparison.OrdinalIgnoreCase
+            // );
 
             // 2) Get the list of source-IDs this user follows
             var followedSourceIds = await _context.Follows
@@ -108,7 +108,7 @@ namespace Main.Handlers
                     DateTime         = a.TimeCreated,     // or combine ReactionDate+Time
                     SelectedReaction = a.SelectedReaction,
                     Counters         = counters,
-                    IsAdmin          = isAdmin ? "Yes" : "No"
+                    IsAdmin          = "Verified"
                 };
             })
             .ToList();

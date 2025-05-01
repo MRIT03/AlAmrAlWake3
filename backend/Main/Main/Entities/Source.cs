@@ -13,7 +13,7 @@ public class Source
     [Url]
     public string WebsiteURL { get; set; }
 
-    public string RSS { get; set; }
+    public double SRR { get; set; }
 
     public ICollection<Article> Articles { get; set; }
     public ICollection<Follow> Followers { get; set; }
