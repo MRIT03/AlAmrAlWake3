@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './AdminBottomBar.css';
 
 const AdminBottomBar = ({ counters, onReact, selectedReaction, oneHourPassed }) => {
 
     // TO-DO Command #A
+
+    // State to track which flag action ("Verify" or "Fake News") is selected
+    const [selectedFlag, setSelectedFlag] = useState(null);
+
+    // Handle button click to toggle mutual exclusivity between "Verify" and "Fake News"
+    const handleFlagClick = (flag) => {
+        if (selectedFlag === flag) {
+            setSelectedFlag(null);  // Deselect if already selected
+        } else {
+            setSelectedFlag(flag);  // Select the clicked flag
+        }
+    };
 
     const reactions = [
         { icon: "hand-thumbs-up", fillIcon: "hand-thumbs-up-fill", label: "Like", color: "blue", counter: counters[0] },
@@ -27,12 +39,12 @@ const AdminBottomBar = ({ counters, onReact, selectedReaction, oneHourPassed }) 
                         return (
                             <div key={index} className="d-flex align-items-center">
                                 <button
-                                className="admin-reaction-btn"
-                                onClick={null}
-                                disabled
-                                title={reaction.label}
+                                    className="admin-reaction-btn"
+                                    onClick={null}
+                                    disabled
+                                    title={reaction.label}
                                 >
-                                <i className={`bi bi-${iconClass}`}></i>
+                                    <i className={`bi bi-${iconClass}`}></i>
                                 </button>
 
                                 <span className="ms-2 text-muted small">{reaction.counter}</span>
@@ -43,16 +55,22 @@ const AdminBottomBar = ({ counters, onReact, selectedReaction, oneHourPassed }) 
 
                 {/* Flag section */}
                 {oneHourPassed && (
-
                     <div className="admin-actions">
-                        <button className="flag-verify">Verify</button>
-                        <button className="flag-fake">Fake News</button>
+                        <button
+                            className={`flag-verify ${selectedFlag === 'verify' ? 'active' : ''}`}
+                            onClick={() => handleFlagClick('verify')}
+                        >
+                            Verify
+                        </button>
+                        <button
+                            className={`flag-fake ${selectedFlag === 'fake' ? 'active' : ''}`}
+                            onClick={() => handleFlagClick('fake')}
+                        >
+                            Fake News
+                        </button>
                         <button className="flag-delete">Delete</button>
                     </div>
-
-                  
                 )}
-
             </div>
         </div>
     );
