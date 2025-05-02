@@ -1,9 +1,8 @@
-using FinalLab.Application.Commands;
+using Main.Commands;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using Main.Commands;
 using Main.Data.Contexts;
 
 namespace Main.Handlers

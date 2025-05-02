@@ -1,45 +1,43 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
-import './MapSideBar.css'; 
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './MapSideBar.css';
 
-const MapSideBar = ({ newsByLoc = [] }) => {
-  const navigate = useNavigate(); // Initialize navigate function
-
-  const handlePostNavigation = (loc, headline) => {
+const MapSideBar = ({ timeFilter = 1, followFilter = false, onTimeFilterChange, onFollowFilterChange }) => {
+  
+  const navigate = useNavigate();
+  const [newsByLoc, setNewsByLoc] = useState([]);
+  
+  // TO-DO, pass the two filters values to the useEffect method querying for news
+  // UPDATED it below so we can give it Filter by time, Filter by FollowingPages 
+  useEffect(() => {
+    axios.get('http://localhost:5120/api/Posts/', {
+      params: {
+        hours: currentTimeFilter,
+        onlyFollowed: currentFollowFilter
+      }
+    })
+    .then(response => {
+      setNewsByLoc(response.data);
+    })
+    .catch(console.error);
+  }, [currentTimeFilter, currentFollowFilter]);
+  
+  const handlePostNavigation = (loc, article) => {
     const postData = {
-      "city": "Beirut",
-      "selectedReaction": null,
-      "counters": [120, 10, 0, 0, 3, 1, 2, 0],
-      "headline": "متعاقدو الأساسي الرسمي: نطالب الحكومة بالعودة عن قرارها المجحف",
-      "body": "وللمناسبة، قالت رئيسة الرابطة نسرين شاهين: \"جئنا اليوم لندافع عن كرامة المعلمين...\"",
-      "sourceName": "MTV",
-      "SRR": 3.6,
-      "PTS": 78,
-      "dateTime": "4/18/2025 15:53",
-      "admin": ""
+      city: loc.city,
+      articleId: article.articleId,
+      headline: article.headline,
+      // …add any other fields you need
     };
-    // TO-DO Query #1
-    // useEffect(() => {
-  //   axios.get("http://localhost:4000/posts") // TO-DO Query #1 Change Port Number
-  //     .then(response => {
-  //       setPosts(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error("Error fetching posts:", error);
-  //     })
-  // }, []);
     const query = new URLSearchParams(postData).toString();
     navigate(`/post?${query}`);
-  };  
+  };
 
   return (
-    <div className="map-sidebar"> {/* Container for the sidebar */}
-      
-      {/* Title of the Sidebar */}
-      {/* <h3 className='map-sidebar-title'>📰 Latest News by Location</h3> */}
-
-      
+    <div className="map-sidebar">
       <div className="d-flex justify-content" style={{ gap: '1rem'}}>
+      
       {/* First Dropdown */}
       <div className="dropdown custom-dropdown">
         <button
@@ -49,12 +47,25 @@ const MapSideBar = ({ newsByLoc = [] }) => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          Recent
+          {timeFilter === 1 ? 'Last 24 hrs' : 'Last 7 days'}
         </button>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a className="dropdown-item" href="#">Last 24 hrs</a></li>
-          <li><a className="dropdown-item" href="#">Last 7 days</a></li>
-          {/* <li><a className="dropdown-item" href="#">Something else</a></li> */}
+          <li>
+              <a className="dropdown-item" href="#" onClick={(e) => {
+                e.preventDefault();
+                onTimeFilterChange(1);
+              }}>
+                Last 24 hrs
+              </a>
+          </li>
+          <li>
+              <a className="dropdown-item" href="#" onClick={(e) => {
+                e.preventDefault();
+                onTimeFilterChange(7);
+              }}>
+                Last 7 days
+              </a>
+          </li>
         </ul>
       </div>
 
@@ -67,51 +78,62 @@ const MapSideBar = ({ newsByLoc = [] }) => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          Following
+          {followFilter ? 'Following' : 'All'}
         </button>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-          <li><a className="dropdown-item" href="#">All</a></li>
-          <li><a className="dropdown-item" href="#">Following</a></li>
-          {/* <li><a className="dropdown-item" href="#">Option C</a></li> */}
+          <li>
+              <a className="dropdown-item" href="#" onClick={(e) => {
+                e.preventDefault();
+                onFollowFilterChange(false);
+              }}>
+                All
+              </a>
+          </li>
+          <li>
+              <a className="dropdown-item" href="#" onClick={(e) => {
+                e.preventDefault();
+                onFollowFilterChange(true);
+              }}>
+                Following
+              </a>
+          </li>
         </ul>
       </div>
-    </div>
 
-      {/* TRIAL ZONE */}
 
-      {/* List of news headlines */}
+      </div>
+
       <div className="headline-list">
-        {newsByLoc.map((loc, index) => (
-          <div key={index} className="city-headlines"> {/* City-specific container */}
-            
-            {/* City name as header */}
+        {newsByLoc?.map((loc, idx) => (
+          <div key={idx} className="city-headlines">
             <h3>{loc.city}</h3>
-            
-            {/* Headlines for the city */}
             <ul>
-              {loc.headlines.map((headline, i) => (
-                <li
-                  key={i}
-                  onClick={() => handlePostNavigation(loc, headline)} 
-                  title="See Post"  
-                  className="headline-item"  
-                >
-                  {/* Headline Text */}
-                  <span className="headline-text">{headline}</span>
-
-                  {/* Arrow Button to "See Post" */}
-                  <button
-                    className="see-post-button"
-                    onClick={(e) => {
-                      e.stopPropagation();  {/* Prevents event from bubbling up */}
-                      handlePostNavigation(loc, headline);  {/* Navigate to SinglePostView */}
-                    }}
+              {Array.isArray(loc.articles) && loc.articles.length > 0 ? (
+                loc.articles.map((article, i) => (
+                  <li
+                    key={i}
+                    className="headline-item"
+                    onClick={() => handlePostNavigation(loc, article)}
                     title="See Post"
                   >
-                    ➜ {/* Arrow pointing to the left */}
-                  </button>
-                </li>
-              ))}
+                    <span className="headline-text">
+                      {article.headline}
+                    </span>
+                    <button
+                      className="see-post-button"
+                      onClick={e => {
+                        e.stopPropagation();
+                        handlePostNavigation(loc, article);
+                      }}
+                      title="See Post"
+                    >
+                      ➜
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <li>No articles</li>
+              )}
             </ul>
           </div>
         ))}
