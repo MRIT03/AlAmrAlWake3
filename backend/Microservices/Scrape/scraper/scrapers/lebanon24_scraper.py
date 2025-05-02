@@ -1,6 +1,6 @@
 from .base_scraper import BaseHomepageScraper
 from bs4 import BeautifulSoup
-
+import requests
 class Lebanon24Scraper(BaseHomepageScraper):
     BASE_URL = "https://www.lebanon24.com"
 
@@ -15,3 +15,20 @@ class Lebanon24Scraper(BaseHomepageScraper):
             if href and any(char.isdigit() for char in href):
                 links.append(self.BASE_URL + href)
         return list(set(links))
+
+    def extract_content(self, url):
+        response = requests.get(url, headers=self.headers, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        title = soup.title.string.strip() if soup.title else "No Title"
+
+        # Target the article body
+        article_body = soup.select_one("div.Article_Details_Desc.article_body_text")
+        if not article_body:
+            return title, ""
+
+        # Collect all visible text inside, joining multiple small <div>s and <br>s
+        content = article_body.get_text(separator="\n", strip=True)
+
+        return title, content
