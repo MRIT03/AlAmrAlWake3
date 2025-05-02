@@ -19,20 +19,7 @@ const PostFeed = ({ filterOutlet = false }) => {
   if(!filterOutlet){ 
     useEffect(() => {})
   }
-  // else{ TO-DO Query #5 Change Port Number
 
-  // }
-
-  useEffect(() => { // MANUAL FETCHING FROM POSTS.JSON
-    fetch('/posts.json')
-      .then(res => {
-        if (!res.ok) throw new Error("Failed to load posts");
-        return res.json();
-      })
-      .then(data => setPosts(data))
-      .catch(err => console.error("Error loading posts:", err));
-  }, []);
-  
   return (
     <div>
       {posts.map((post, index) => (
