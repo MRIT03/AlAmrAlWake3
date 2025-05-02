@@ -4,7 +4,7 @@ import AuthField from './AuthField';
 import './SignupForm.css'; 
 import { useNavigate } from 'react-router-dom';
  
-const AdminSingupForm = ({ }) => {
+const AdminSignupForm = ({ }) => {
     
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -91,4 +91,4 @@ const AdminSingupForm = ({ }) => {
   );
 };
 
-export default AdminSingupForm;
+export default AdminSignupForm;
