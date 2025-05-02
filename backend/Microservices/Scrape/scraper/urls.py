@@ -1,6 +1,10 @@
 from django.urls import path
-from .views import latest_articles
+from .views import articles_up_to_date
 
 urlpatterns = [
-    path("api/articles/", latest_articles, name="latest_articles"),
+    path(
+        'articles/up-to/<str:date>/',
+        articles_up_to_date,
+        name='articles-up-to-date'
+    ),
 ]
