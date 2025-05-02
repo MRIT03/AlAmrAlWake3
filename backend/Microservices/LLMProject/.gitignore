@@ -1,0 +1,28 @@
+# Ignore the virtual environment
+env/
+ENV/
+.venv/
+venv/
+
+# Ignore the .env file containing secrets
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VSCode settings (optional, if you're using VSCode)
+.vscode/
+
+# macOS & Windows system files
+.DS_Store
+Thumbs.db
+
+# Ignore Chroma vector database (if you don't want to commit it — usually wise!)
+vector_db/
+
+# Streamlit cache (optional)
+.streamlit/
+
