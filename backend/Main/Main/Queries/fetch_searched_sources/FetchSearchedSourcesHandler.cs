@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Main.Data.Contexts;
 using Main.Queries;
 using Main.Queries.DTOs;
-using Main.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +16,7 @@ namespace Main.Handlers
         private readonly AppDbContext _context;
         public FetchNewsSourcesQueryHandler(AppDbContext context)
             => _context = context;
-
+    
         public async Task<List<NewsSourceDto>> Handle(
             FetchNewsSourcesQuery request,
             CancellationToken cancellationToken)
@@ -28,7 +27,7 @@ namespace Main.Handlers
                 .Select(s => new
                 {
                     s.SourceName,
-                    
+                    s.SRR,
                     IsFollowing = s.Followers
                         .Any(f => f.UserId == request.UserId)
                 })
@@ -39,7 +38,7 @@ namespace Main.Handlers
                 .Select(r => new NewsSourceDto
                 {
                     SourceName  = r.SourceName,
-                    
+                    SRR = r.SRR,
                     IsFollowing = r.IsFollowing
                 })
                 .ToList();

@@ -23,15 +23,15 @@ namespace Main.Handlers
         FetchFeedPostsQuery request,
         CancellationToken cancellationToken)
     {
-        // 1) load the requesting user's role (so we can set IsAdmin)
-        var userRole = await _context.Users
-            .Where(u => u.UserId == request.UserId)
-            .Select(u => u.UserRole)
-            .FirstOrDefaultAsync(cancellationToken);
+        // // 1) load the requesting user's role (so we can set IsAdmin)
+        // var userRole = await _context.Users
+        //     .Where(u => u.UserId == request.UserId)
+        //     .Select(u => u.UserRole)
+        //     .FirstOrDefaultAsync(cancellationToken);
 
-        bool isAdmin = string.Equals(userRole, "Admin", StringComparison.OrdinalIgnoreCase);
+        // bool isAdmin = string.Equals(userRole, "Admin", StringComparison.OrdinalIgnoreCase);
 
-        // 2) load the list of source-ids this user follows
+        // // 2) load the list of source-ids this user follows
         var followedSourceIds = await _context.Follows
             .Where(f => f.UserId == request.UserId)
             .Select(f => f.SourceId)
@@ -102,7 +102,7 @@ namespace Main.Handlers
                     PTS              = a.PTS,
                     TimeCreated      = a.TimeCreated,
                     DateTime         = a.TimeCreated,                // or combine ReactionDate + ReactionTime
-                    IsAdmin          = isAdmin ? "Yes" : "No",
+                    IsAdmin          = "Verified",
                     SelectedReaction = a.SelectedReaction,
                     Counters         = counters
                 };

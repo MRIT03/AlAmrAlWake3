@@ -22,19 +22,19 @@ namespace Main.Handlers
             FetchNewsOutletPostsQuery request,
             CancellationToken cancellationToken)
         {
-            // 1) Fetch the user's role once
-            var userRole = await _context.Users
-                .Where(u => u.UserId == request.UserId)
-                .Select(u => u.UserRole)
-                .FirstOrDefaultAsync(cancellationToken);
+            
+            // // 1) Get user role once
+            // var userRole = await _context.Users
+            //     .Where(u => u.UserId == request.UserId)
+            //     .Select(u => u.UserRole)
+            //     .FirstOrDefaultAsync(cancellationToken);
 
-            bool isAdmin = string.Equals(
-                userRole,
-                "Admin",
-                StringComparison.OrdinalIgnoreCase
-            );
+            // bool isAdmin = string.Equals(
+            //     userRole,
+            //     "Admin",
+            //     StringComparison.OrdinalIgnoreCase
+            // );
 
-            // 2) Single query for all posts on that source + their reactions
             var raw = await _context.Articles
                 .Where(a => a.SourceId == request.SourceId)
                 .OrderByDescending(a => a.TimeCreated)
@@ -95,7 +95,7 @@ namespace Main.Handlers
                     DateTime         = p.TimeCreated,       // or build from ReactionDate+Time
                     SelectedReaction = p.SelectedReaction,
                     Counters         = counters,
-                    IsAdmin          = isAdmin ? "Yes" : "No"
+                    IsAdmin          = "Verified"
                 };
             })
             .ToList();

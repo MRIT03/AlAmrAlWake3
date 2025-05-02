@@ -14,7 +14,7 @@ public class Article
 
     public string Body { get; set; }
 
-    public int PTS { get; set; }
+    public double PTS { get; set; }
 
     // Foreign keys
     public int SourceId { get; set; }

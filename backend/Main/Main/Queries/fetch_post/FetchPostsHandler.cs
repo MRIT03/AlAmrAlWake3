@@ -25,17 +25,17 @@ namespace Main.Handlers
             FetchPostInfoQuery request,
             CancellationToken cancellationToken)
         {
-            // 1) load the user's role once
-            var userRole = await _context.Users
-                .Where(u => u.UserId == request.UserId)
-                .Select(u => u.UserRole)
-                .FirstOrDefaultAsync(cancellationToken);
+            // // 1) load the user's role once
+            // var userRole = await _context.Users
+            //     .Where(u => u.UserId == request.UserId)
+            //     .Select(u => u.UserRole)
+            //     .FirstOrDefaultAsync(cancellationToken);
 
-            bool isAdmin = string.Equals(
-                userRole,
-                "Admin",
-                StringComparison.OrdinalIgnoreCase
-            );
+            // bool isAdmin = string.Equals(
+            //     userRole,
+            //     "Admin",
+            //     StringComparison.OrdinalIgnoreCase
+            // );
 
             // 2) single query for the article + region + source + reactions
             var raw = await _context.Articles
@@ -103,7 +103,7 @@ namespace Main.Handlers
                 DateTime         = raw.TimeCreated,         // or combine ReactionDate+Time
                 SelectedReaction = raw.SelectedReaction,
                 Counters         = counters,
-                IsAdmin          = isAdmin ? "Yes" : "No"
+                IsAdmin          = "Verified"
             };
         }
     }
