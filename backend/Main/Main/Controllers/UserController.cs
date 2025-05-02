@@ -5,6 +5,7 @@ using Main.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace Main.Controllers
@@ -50,5 +51,57 @@ namespace Main.Controllers
             }
             return BadRequest();
         }
+
+        [HttpPost("[action]")]
+        public ActionResult SignUp([FromForm] UserFormDto userForm)
+        {
+            var username = _context.Users.SingleOrDefault(u => userForm.UserName == u.Username);
+            if(username != null) return BadRequest("Username already taken");
+            User newUser = new User()
+            {
+                Username = userForm.UserName,
+                EmailAddress = userForm.EmailAddress,
+                UserRole = userForm.UserRole,
+                CreatedAt = DateTime.Now,
+            };
+            var hasher =new PasswordHasher<User>();
+            newUser.HashedPassword = hasher.HashPassword(newUser, userForm.Password);
+            var region = _context.Regions.Single(r => r.RegionName == userForm.Region).RegionId;
+            newUser.RegionId = region;
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
+            return Ok();
+
+        }
+
+        [HttpPost("[action]")]
+        public ActionResult<Boolean> Login([FromForm] LoginFormDto userForm)
+        {
+            var user = _context.Users.SingleOrDefault(u => userForm.Username == u.Username);
+            if(user == null ) return BadRequest("Username doesn't exist");
+            var hasher = new PasswordHasher<User>();
+            var verify = hasher.VerifyHashedPassword(user, user.HashedPassword, userForm.Password);
+            if (verify != PasswordVerificationResult.Success)
+            {
+                return BadRequest("Incorrect Username or Password");
+            }
+            else return Ok(true);
+        }
+    }
+
+    public class UserFormDto
+    {
+        public string UserName { get; set; }
+        public string EmailAddress { get; set; }
+        public string Password { get; set; }
+        public string UserRole { get; set; }
+        public string Region { get; set; }
+        
+    }
+
+    public class LoginFormDto
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
