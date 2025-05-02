@@ -92,8 +92,11 @@ const newsByLoc = [
 
 const MapView = () => {
 
-  // const [newsByLoc, setNewsByLoc] = useState([]); 
+  // const [newsByLoc, setNewsByLoc] = useState([]); // To be uncommented out
   const [selectedLoc, setSelectedLoc] = useState(null);
+
+  const [timeFilter, setTimeFilter] = useState(1);       // default last 1 day
+  const [followFilter, setFollowFilter] = useState(false); // default show all, don't filter
 
   // TO-DO Query #2
   // useEffect(() => {
@@ -120,7 +123,13 @@ const MapView = () => {
         zoom={8} 
         onMarkerClick={handleMarkerClick}
       />
-      <MapSideBar newsByLoc={filteredNews} />    
+      <MapSideBar 
+        newsByLoc={filteredNews} 
+        timeFilter={timeFilter}
+        followFilter={followFilter}
+        onTimeFilterChange={setTimeFilter}
+        onFollowFilterChange={setFollowFilter}
+      />    
     </div>
   );
 };

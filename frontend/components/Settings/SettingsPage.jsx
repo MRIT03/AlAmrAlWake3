@@ -24,6 +24,12 @@ const SettingsPage = ({ username="its.nourr"}) => {
             <PostAuthNavbar/>
             <SettingsPanel givenUsername={username} />
 
+            {/* Add Outlet Lists of news sources the user follows */}
+            {/* TO-DO Query: fetch info of outlets to display as a list */}
+            {/* {ressoursesFollowed.map(outlet => (
+            <OutletCard key={outlet.id} sourceName={outlet.sourceName} SRR={outlet.SRR} followingStatus={outlet.followingStatus} />
+            ))} */}
+
         </div>    
   );
 };
