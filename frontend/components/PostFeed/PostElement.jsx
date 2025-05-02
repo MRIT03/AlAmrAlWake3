@@ -3,8 +3,7 @@ import './PostElement.css';
 import PostUpperPart from "./PostUpperPart";
 import PostBottomBar from "./PostBottomBar";
 import AdminBottomBar from "../Admin/AdminBottomBar";
-
-import { useGlobalContext } from ".../src/context/GlobalContext.js";
+import { useGlobalContext } from "../../src/context/GlobalContext";
 
 const PostElement = ({postData}) => {
 
@@ -63,6 +62,7 @@ const PostElement = ({postData}) => {
 
   return (
     <div className="post-element">
+      
       <PostUpperPart 
         sourceName = {postInfo.sourceName} 
         city = {postInfo.city} 
