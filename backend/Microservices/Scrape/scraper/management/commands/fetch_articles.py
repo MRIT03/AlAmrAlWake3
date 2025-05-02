@@ -1,4 +1,3 @@
-#fetch_articles
 from django.core.management.base import BaseCommand
 from scraper.homepage_crawler import get_scraper_for_source
 from scraper.models import Article, Log
@@ -8,7 +7,14 @@ class Command(BaseCommand):
     help = "Fetches articles from homepages, extracts content, saves to the database."
 
     def handle(self, *args, **kwargs):
-        sources = ["mtv.com.lb", "lebanon24.com", "otv.com.lb"]
+        sources = [
+            "mtv.com.lb",
+            "lebanon24.com",
+            "otv.com.lb",
+            "lbcgroup.tv",
+            "aljadeed.tv",
+            "almanar.com.lb"
+        ]
 
         for source in sources:
             scraper = get_scraper_for_source(source)
@@ -39,7 +45,7 @@ class Command(BaseCommand):
                         self.stdout.write(f"🔁 Skipped duplicate: {url}")
                         continue
 
-                    # extract_content now returns (title, content)
+                    # extract_content returns (title, content)
                     title, content = scraper.extract_content(url)
 
                     Article.objects.create(
@@ -47,7 +53,7 @@ class Command(BaseCommand):
                         title=title or "No Title",
                         url=url,
                         content=content or "",
-                        source=source  # Use the source domain, not the full URL
+                        source=source  # use source name, not full URL
                     )
                     self.stdout.write(f"✅ Saved: {title or 'No Title'}")
 
@@ -55,3 +61,4 @@ class Command(BaseCommand):
                     self.stderr.write(f"❌ Error saving {url}: {e}")
 
         self.stdout.write(self.style.SUCCESS("🎉 Finished fetching all articles."))
+
