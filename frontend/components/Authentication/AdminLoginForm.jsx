@@ -5,7 +5,7 @@ import AuthField from './AuthField';
 import './LoginForm.css';
 import { useNavigate } from 'react-router-dom';
 
-const LoginForm = () => {
+const AdminLoginForm = () => {
     
   const [loginText, setLoginText] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +21,7 @@ const LoginForm = () => {
       const formData = new FormData();
       formData.append("Username", loginText);
       formData.append("Password", password);
-      formData.append("UserRole", "User");
+      formData.append("UserRole", "Admin");
   
       const response = await axios.post('http://localhost:5120/api/User/Login', formData, {
         headers: {
@@ -72,4 +72,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default AdminLoginForm;
