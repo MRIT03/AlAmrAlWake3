@@ -11,7 +11,7 @@ import SinglePostView from '../components/Misc/SinglePostView';
 import NewsSourcePage from '../components/Misc/NewsSourcePage';
 import LoginForm from '../components/Authentication/LoginForm';
 import AdminLoginForm from '../components/Authentication/AdminLoginForm';
-import AdminLoginForm from '../components/Authentication/AdminSignupForm';
+import AdminSignupForm from '../components/Authentication/AdminSignupForm';
 import SignupForm from '../components/Authentication/SignupForm';
 import LandingPage from '../components/Misc/LandingPage';
 
