@@ -9,6 +9,8 @@ const PreAuthNavbar = () => {
 
     const goToLogin = () => navigate('/login');
     const goToSignup = () => navigate('/signup');
+    const goToAdminLogin = () => navigate('/admin/login');
+    const goToAdminSignup = () => navigate('/admin/signup');
 
   return (
     <div className='navbar-container'>
@@ -22,6 +24,9 @@ const PreAuthNavbar = () => {
           />
         </div>
         <div className='pre-auth-pages-links'>
+            <button className='pre-auth-navbar-button' onClick={goToAdminLogin} title='Login'>Admin Login</button>
+            <button className='pre-auth-navbar-button' onClick={goToAdminSignup} title='Login'>Admin Signup</button>
+
             <button className='pre-auth-navbar-button' onClick={goToLogin} title='Login'>Log in</button>
             <button className='signup-button' onClick={goToSignup} title='Signup'>Sign up</button>
         </div> 
