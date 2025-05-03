@@ -1,36 +1,51 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './SettingsPage.css'; 
 
-import SettingsInputField from './SettingsInputField';
 import PostAuthNavbar from '../Navigation/PostAuthNavbar';
 import SettingsPanel from './SettingsPanel';
+import OutletCard from '../Misc/OutletCard';
 
-const SettingsPage = ({ username="its.nourr"}) => { 
+const SettingsPage = () => {
+  const [username, setUsername] = useState('');
+  const [ressourcesFollowed, setRessourcesFollowed] = useState([]);
 
-  // useEffect(() => { // Fetch USERNAME
-  //   axios.get("http://localhost:4000/posts") // TO-DO Query #8 + Change Port Number
-  //     .then(response => {
-  //       setPosts(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error("Error fetching posts:", error);
-  //     })
-  // }, []);
+  useEffect(() => {
+    // Fetch username
+    axios.get("http://localhost:5120/getusername")
+      .then(response => {
+        setUsername(response.data.username); // Update to the real name of the route, queryName is fetch_username
+      })
+      .catch(error => {
+        console.error("Error fetching username:", error);
+      });
 
-        return (
-        <div className='settings-page-wrapper'>
+    // Fetch outlets
+    axios.get("http://localhost:5120/getOutlets") // Update to the real name of the route, queryName is fetch_followed_sources
+      .then(response => {
+        setRessourcesFollowed(response.data); // expecting array of outlet objects
+      })
+      .catch(error => {
+        console.error("Error fetching outlets:", error);
+      });
+  }, []);
 
-            <PostAuthNavbar/>
-            <SettingsPanel givenUsername={username} />
+  return (
+    <div className='settings-page-wrapper'>
+      <PostAuthNavbar />
+      <SettingsPanel givenUsername={username} />
 
-            {/* Add Outlet Lists of news sources the user follows */}
-            {/* TO-DO Query: fetch info of outlets to display as a list */}
-            {/* {ressoursesFollowed.map(outlet => (
-            <OutletCard key={outlet.id} sourceName={outlet.sourceName} SRR={outlet.SRR} followingStatus={outlet.followingStatus} />
-            ))} */}
-
-        </div>    
+      {/* Outlet Cards for followed resources */}
+      {ressourcesFollowed.map(outlet => (
+        <OutletCard
+          key={outlet.id}
+          sourceName={outlet.sourceName}
+          SRR={outlet.SRR}
+          followingStatus={outlet.followingStatus}
+        />
+      ))}
+    </div>
   );
 };
 

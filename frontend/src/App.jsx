@@ -10,6 +10,8 @@ import SettingsPage from '../components/Settings/SettingsPage';
 import SinglePostView from '../components/Misc/SinglePostView';
 import NewsSourcePage from '../components/Misc/NewsSourcePage';
 import LoginForm from '../components/Authentication/LoginForm';
+import AdminLoginForm from '../components/Authentication/AdminLoginForm';
+import AdminSignupForm from '../components/Authentication/AdminSignupForm';
 import SignupForm from '../components/Authentication/SignupForm';
 import LandingPage from '../components/Misc/LandingPage';
 
@@ -28,6 +30,8 @@ function App() {
           <Route path="/outlet" element={<NewsSourcePage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/signup" element={<SignupForm />} />
+          <Route path="/admin/login" element={<AdminLoginForm />} />
+          <Route path="/admin/signup" element={<AdminSignupForm />} />
         </Routes>
       </div>
     </Router>
