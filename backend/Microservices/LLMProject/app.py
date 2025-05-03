@@ -1,41 +1,68 @@
-from article_query import search_articles
-from llm_answer_builder import build_answer
+# app.py
 
-def main():
-    print("🔎 Welcome to the News Assistant (LLM Powered)")
-    query = input("What do you want to know about today?\n> ")
+import streamlit as st
+import google.generativeai as genai
+from langchain_chroma import Chroma
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from dotenv import load_dotenv
+import os
+from index_articles import get_articles_from_db  # We'll use this to reindex if needed
 
-    # 1. Search your DB articles
-    relevant_articles = search_articles(query, max_results=5)
+load_dotenv()
+api_key = os.getenv("GOOGLE_GEMINI_API_KEY")
 
-    if not relevant_articles:
-        print("No relevant articles found in your database.")
-        return
+# --- Gemini setup ---
+genai.configure(api_key=api_key)
+MODEL_NAME = 'gemini-2.5-flash-preview-04-17'
+model = genai.GenerativeModel(MODEL_NAME)
 
-    # 2. Build LLM answer
-    answer, cited_articles = build_answer(query, relevant_articles)
+# --- Chroma setup ---
+embeddings = GoogleGenerativeAIEmbeddings(
+    model="models/embedding-001",
+    google_api_key=api_key
+)
 
-    # 3. Output answer
-    print("\n📝 Answer:\n")
-    print(answer)
+vector_store = Chroma(
+    collection_name="embeddings",
+    embedding_function=embeddings,
+    persist_directory="./vector_db"
+)
 
-    # 4. Offer to summarize any articles
-    if cited_articles:
-        print("\nWould you like a summary of any of these articles?")
-        for idx, article in enumerate(cited_articles, start=1):
-            print(f"{idx}. {article['title']} - {article['url']}")
+# --- Streamlit UI ---
+st.title("📰 Lebanese News AI Assistant")
 
-        choice = input("\nEnter the number of the article to summarize (or press Enter to skip): ")
-        if choice.isdigit():
-            idx = int(choice) - 1
-            if 0 <= idx < len(cited_articles):
-                selected = cited_articles[idx]
-                print("\n🔎 Summary:\n")
-                print(selected["content"][:1000] + "..." if selected["content"] else "No content available.")
-            else:
-                print("Invalid choice.")
-        else:
-            print("No article selected for summarization.")
+question = st.text_input("Ask me anything about recent news:")
 
-if __name__ == "__main__":
-    main()
+if question:
+    similar_docs = vector_store.similarity_search(question, k=4)
+
+    context = ""
+    for doc in similar_docs:
+        context += f"Title: {doc.metadata['title']}\nSource: {doc.metadata['source']}\nContent: {doc.page_content}\n\n"
+
+    full_prompt = f"""
+You are an AI that answers questions using both your general knowledge and the provided articles from Lebanese news outlets.
+If relevant, mention what the news outlets say and cite the article title and source. Answer the user's question:
+'{question}'
+
+Here are the articles:
+{context}
+"""
+
+    response = model.generate_content(full_prompt)
+    st.subheader("Answer:")
+    st.write(response.text)
+
+    if similar_docs:
+        st.markdown("---")
+        st.subheader("Would you like to summarize one of the articles I used?")
+        options = [f"{doc.metadata['title']} ({doc.metadata['source']})" for doc in similar_docs]
+        choice = st.selectbox("Select article to summarize:", ["None"] + options)
+
+        if choice != "None":
+            idx = options.index(choice)
+            article = similar_docs[idx]
+            summary_prompt = f"Summarize this article:\n\n{article.page_content}"
+            summary = model.generate_content(summary_prompt)
+            st.subheader("Summary:")
+            st.success(summary.text)
