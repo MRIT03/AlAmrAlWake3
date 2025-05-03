@@ -11,7 +11,7 @@ const MapSideBar = ({ timeFilter = 1, followFilter = false, onTimeFilterChange, 
   // TO-DO, pass the two filters values to the useEffect method querying for news
   // UPDATED it below so we can give it Filter by time, Filter by FollowingPages 
   useEffect(() => {
-    axios.get('http://localhost:5120/api/Posts/', {
+    axios.get('http://localhost:5120/api/Posts/', { // Update to the real name of the route, queryName is fetch_map_posts
       params: {
         hours: currentTimeFilter,
         onlyFollowed: currentFollowFilter

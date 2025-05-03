@@ -98,9 +98,9 @@ const MapView = () => {
   const [timeFilter, setTimeFilter] = useState(1);       // default last 1 day
   const [followFilter, setFollowFilter] = useState(false); // default show all, don't filter
 
-  // TO-DO Query #2
+  // Q2
   // useEffect(() => {
-  //   axios.get('http://localhost:4000/newsByLoc')
+  //   axios.get('http://localhost:5120/newsByLoc') 
   //     .then(response => {
   //       setNewsByLoc(response.data);
   //     })
