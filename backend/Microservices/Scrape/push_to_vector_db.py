@@ -1,92 +1,55 @@
-import os
-import django
+"""
+Call from a cron / Django‑Q / Celery beat task every X minutes.
+Adds only *new* qualifying articles.
+"""
+import os, django, re, hashlib
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.documents import Document
-import re
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-# Django setup
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
-
 from scraper.models import Article
 
-# Load .env
+# ---------------------------------------------------------------------------
 load_dotenv()
-api_key = os.getenv("GOOGLE_GEMINI_API_KEY")
-
-# Init embedding + shared vector DB
-embedding = GoogleGenerativeAIEmbeddings(
+emb_fn = GoogleGenerativeAIEmbeddings(
     model="models/embedding-001",
-    google_api_key=api_key
+    google_api_key=os.environ["GOOGLE_GEMINI_API_KEY"],
 )
 
-vector_store = Chroma(
-    persist_directory="../LLMProject/vector_db",
-    embedding_function=embedding
-)
+VDB_DIR = os.path.join(os.path.dirname(__file__), "vector_db")
+vstore = Chroma(persist_directory=VDB_DIR, embedding_function=emb_fn)
 
-def should_index_article(url, content):
-    homepage_prefixes = [
-        "https://www.mtv.com.lb/",
-        "https://www.lebanon24.com/",
-        "https://www.otv.com.lb/",
-        "https://www.lbcgroup.tv/",
-        "https://www.almanar.com.lb/",
-        "https://www.elnashra.com/",
-        "https://www.annahar.com/",
-        "https://www.nna-leb.gov.lb/",
-        "https://www.aljazeera.com/"
-    ]
+# ---------------------------------------------------------------------------
+def article_fingerprint(article) -> str:
+    """A stable hash so we don't double‑index an identical item."""
+    raw = f"{article.pk}:{hashlib.md5(article.content.encode()).hexdigest()}"
+    return raw
 
-    # Block common category slugs
-    blocklist = ["news", "international", "articles", "breaking-news",
-                 "category", "politics", "latest-news", "bulletins"]
+already = {m["id"] for m in vstore.get(include=["metadatas"])["metadatas"]}
 
-    # EXCLUDE if exact homepage
-    for homepage in homepage_prefixes:
-        if url.rstrip("/").lower() == homepage.rstrip("/").lower():
-            return False
-
-    # EXCLUDE if content is too short
-    if len(content.strip()) < 100:
-        return False
-
-    # INCLUDE if numeric ID present
-    import re
-    if re.search(r"\d{5,}", url):
-        return True
-
-    # Check slug
-    slug = url.rstrip("/").split("/")[-1].lower()
-
-    # EXCLUDE if slug matches any blocklist term
-    if slug in blocklist:
-        return False
-
-    # INCLUDE if slug is long and not purely numeric
-    if len(slug) > 10 and not slug.isdigit():
-        return True
-
-    return False
-
-### NEW: Apply filter ###
-docs = []
-for a in Article.objects.all():
-    url = a.url
-    content = a.content
-
-    if should_index_article(url, content):
-        docs.append(
-            Document(
-                page_content=content,
-                metadata={"title": a.title, "url": url, "source": a.source}
-            )
+adds = []
+for a in Article.objects.exclude(pk__in=already):
+    if len(a.content or "") < 100:
+        continue                                      # skip boilerplate
+    if re.fullmatch(r"https?://[^/]+/?", a.url.strip("/")):
+        continue                                      # skip home pages
+    adds.append(
+        Document(
+            page_content=a.content,
+            metadata={
+                "id": a.pk,
+                "title": a.title,
+                "url": a.url,
+                "source": a.source,
+                "date": a.date_scraped.isoformat(),
+                "_fingerprint": article_fingerprint(a),
+            },
         )
-    else:
-        print(f"Skipped: {url}")
+    )
 
-vector_store.add_documents(docs)
-
-print(f"Pushed {len(docs)} articles to ../LLMProject/vector_db")
+if adds:
+    vstore.add_documents(adds)
+print(f"Pushed {len(adds)} new articles to vector DB")

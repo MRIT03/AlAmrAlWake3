@@ -1,3 +1,4 @@
+/*
 using Main.Queries.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -58,3 +59,4 @@ namespace Main.Handlers
         }
     }
 }
+*/

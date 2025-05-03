@@ -8,8 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services
+    .AddHttpClient<ArticleSyncService>(client =>
+    {
+        client.BaseAddress = new Uri("http://127.0.0.1:8000/api/articles/up-to/2025-05-04");
+        client.DefaultRequestHeaders.Add("Accept", "application/json");
+    })
+    // make sure ArticleSyncService itself is scoped so it can get scoped DbContext
+    .Services.AddScoped<ArticleSyncService>();
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+// Then register the hosted worker
+builder.Services.AddHostedService<ArticleSyncWorker>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
