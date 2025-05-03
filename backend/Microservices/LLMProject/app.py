@@ -1,105 +1,68 @@
+# app.py
+
 import streamlit as st
 import google.generativeai as genai
-import os
+from langchain_chroma import Chroma
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from dotenv import load_dotenv
-from vector_search import search_articles
+import os
+from index_articles import get_articles_from_db  # We'll use this to reindex if needed
 
-# --- API Key Configuration ---
 load_dotenv()
 api_key = os.getenv("GOOGLE_GEMINI_API_KEY")
 
-st.set_page_config(page_title="SamurAI", layout="centered")
-st.title("💬 SamurAI")
-
-if not api_key:
-    st.error("Gemini API key not found in environment variables.")
-    st.stop()
-
-# --- Configure Gemini ---
-try:
-    genai.configure(api_key=api_key)
-except Exception as e:
-    st.error(f"Failed to configure Gemini API: {e}")
-    st.stop()
-
-# --- Model Initialization ---
+# --- Gemini setup ---
+genai.configure(api_key=api_key)
 MODEL_NAME = 'gemini-2.5-flash-preview-04-17'
+model = genai.GenerativeModel(MODEL_NAME)
 
-try:
-    model = genai.GenerativeModel(MODEL_NAME)
-except Exception as e:
-    st.error(f"Failed to initialize Gemini model '{MODEL_NAME}': {e}")
-    st.stop()
+# --- Chroma setup ---
+embeddings = GoogleGenerativeAIEmbeddings(
+    model="models/embedding-001",
+    google_api_key=api_key
+)
 
-# --- Session State for Chat History ---
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-    st.session_state.messages.append({
-        "role": "user",
-        "content": ("You are SamurAI, created by Taline and Riad. "
-                    "You help summarize news articles from local Lebanese media outlets. "
-                    "You only follow the tone and style of each article. "
-                    "Act as impressive as you can. Refer to Lebanese politics when needed.")
-    })
-    st.session_state.messages.append({
-        "role": "model",
-        "content": "Hello! How can I help you today?"
-    })
+vector_store = Chroma(
+    collection_name="embeddings",
+    embedding_function=embeddings,
+    persist_directory="./vector_db"
+)
 
-# --- Display Chat History ---
-for message in st.session_state.messages[1:]:  # Skip system prompt
-    with st.chat_message(message["role"] if message["role"] == "user" else "assistant"):
-        st.markdown(message["content"])
+# --- Streamlit UI ---
+st.title("📰 Lebanese News AI Assistant")
 
-# --- Chat Input ---
-if prompt := st.chat_input("What's on your mind?"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
+question = st.text_input("Ask me anything about recent news:")
 
-    with st.chat_message("user"):
-        st.markdown(prompt)
+if question:
+    similar_docs = vector_store.similarity_search(question, k=4)
 
-    # --- Search vector DB for relevant articles ---
-    docs = search_articles(prompt, k=3)
+    context = ""
+    for doc in similar_docs:
+        context += f"Title: {doc.metadata['title']}\nSource: {doc.metadata['source']}\nContent: {doc.page_content}\n\n"
 
-    if docs:
-        combined_content = "\n\n".join(d.page_content for d in docs)
-        debug_articles = "\n".join(
-            [f"- [{doc.metadata['title']}]({doc.metadata['url']})" for doc in docs]
-        )
-        prompt_with_context = (f"Based on the following articles, answer the question:\n\n"
-                               f"{prompt}\n\nArticles:\n{combined_content}")
-    else:
-        combined_content = None
-        debug_articles = "No relevant articles found."
-        prompt_with_context = prompt  # Ask Gemini without extra context
+    full_prompt = f"""
+You are an AI that answers questions using both your general knowledge and the provided articles from Lebanese news outlets.
+If relevant, mention what the news outlets say and cite the article title and source. Answer the user's question:
+'{question}'
 
-    # --- Prepare chat history for Gemini ---
-    api_history_dicts = []
-    for message in st.session_state.messages[:-1]:
-        role = message["role"]
-        if role not in ["user", "model"]:
-            continue
-        api_history_dicts.append({
-            "role": role,
-            "parts": [{"text": message["content"]}]
-        })
+Here are the articles:
+{context}
+"""
 
-    try:
-        chat = model.start_chat(history=api_history_dicts)
-        with st.spinner("I'm thinking, give me a second..."):
-            response = chat.send_message(prompt_with_context)
+    response = model.generate_content(full_prompt)
+    st.subheader("Answer:")
+    st.write(response.text)
 
-        model_response_content = response.text.strip() if response.text else "(No response from Gemini.)"
+    if similar_docs:
+        st.markdown("---")
+        st.subheader("Would you like to summarize one of the articles I used?")
+        options = [f"{doc.metadata['title']} ({doc.metadata['source']})" for doc in similar_docs]
+        choice = st.selectbox("Select article to summarize:", ["None"] + options)
 
-        st.session_state.messages.append({"role": "model", "content": model_response_content})
-
-        with st.chat_message("assistant"):
-            st.markdown(model_response_content)
-
-        # --- Optional: Show which articles were used ---
-        if combined_content:
-            with st.expander("🔎 Articles used for this answer"):
-                st.markdown(debug_articles)
-
-    except Exception as e:
-        st.error(f"An error occurred while calling Gemini: {e}")
+        if choice != "None":
+            idx = options.index(choice)
+            article = similar_docs[idx]
+            summary_prompt = f"Summarize this article:\n\n{article.page_content}"
+            summary = model.generate_content(summary_prompt)
+            st.subheader("Summary:")
+            st.success(summary.text)
