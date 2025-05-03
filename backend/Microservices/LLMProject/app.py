@@ -34,7 +34,7 @@ embeddings = GoogleGenerativeAIEmbeddings(
 )
 
 vector_store = Chroma(
-    collection_name="embeddings",
+    collection_name="news_articles",
     embedding_function=embeddings,
     persist_directory="./vector_db"
 )
@@ -190,6 +190,6 @@ if query:
 
         # ---------- SAVE TO CHAT HISTORY ----------
         st.session_state.chat_history.append({"user": query, "assistant": reply})
-        
+
 st.markdown("---")
 st.markdown("Made with ❤ for the Software Engineering Class")

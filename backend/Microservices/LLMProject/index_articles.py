@@ -102,7 +102,7 @@ def index_articles():
         embeddings,
         collection_name="news_articles",
         persist_directory=str(VECTOR_DB_PATH),
-    ).persist()
+    )
 
     print(f"✅  {len(docs)} articles indexed into {VECTOR_DB_PATH}")
 
