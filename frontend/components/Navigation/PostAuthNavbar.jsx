@@ -10,6 +10,8 @@ const PostAuthNavbar = () => {
   const goToSearch = () => navigate('/search'); 
   const goToMap = () => navigate('/map'); 
   const goToSettings = () => navigate('/settings'); 
+  // const goToLLM = () => navigate('/llm');
+  const goToLLM = () => window.open('https://localhost:8501', '_blank');
 
   return (
     <div className="navbar-container">
@@ -31,6 +33,9 @@ const PostAuthNavbar = () => {
         </button>
         <button className="post-auth-navbar-button" onClick={goToSearch} title="Search">
           Search
+        </button>
+        <button className="post-auth-navbar-button" onClick={goToLLM} title="SumerAI">
+          SumerAI
         </button>
         <button className="post-auth-navbar-button" onClick={goToSettings} title="Settings">
           Settings
