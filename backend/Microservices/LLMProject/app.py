@@ -1,105 +1,195 @@
 import streamlit as st
-import google.generativeai as genai
 import os
 from dotenv import load_dotenv
-from vector_search import search_articles
 
-# --- API Key Configuration ---
+from langchain_chroma import Chroma
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_core.documents import Document
+import google.generativeai as genai
+from tavily import TavilyClient
+
+# ---------- CONFIG ----------
 load_dotenv()
-api_key = os.getenv("GOOGLE_GEMINI_API_KEY")
 
-st.set_page_config(page_title="SamurAI", layout="centered")
-st.title("💬 SamurAI")
+api_key = os.getenv("GOOGLE_GEMINI_API_KEY")
+tavily_key = os.getenv("TAVILY_API_KEY")
 
 if not api_key:
-    st.error("Gemini API key not found in environment variables.")
+    st.error("GOOGLE_GEMINI_API_KEY missing.")
     st.stop()
 
-# --- Configure Gemini ---
-try:
-    genai.configure(api_key=api_key)
-except Exception as e:
-    st.error(f"Failed to configure Gemini API: {e}")
-    st.stop()
+if not tavily_key:
+    st.warning("Tavily API key missing. Web search fallback won't work.")
+else:
+    tavily_client = TavilyClient(api_key=tavily_key)
 
-# --- Model Initialization ---
-MODEL_NAME = 'gemini-2.5-flash-preview-04-17'
+genai.configure(api_key=api_key)
 
-try:
-    model = genai.GenerativeModel(MODEL_NAME)
-except Exception as e:
-    st.error(f"Failed to initialize Gemini model '{MODEL_NAME}': {e}")
-    st.stop()
+MODEL_NAME = "gemini-2.5-flash-preview-04-17"
 
-# --- Session State for Chat History ---
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-    st.session_state.messages.append({
-        "role": "user",
-        "content": ("You are SamurAI, created by Taline and Riad. "
-                    "You help summarize news articles from local Lebanese media outlets. "
-                    "You only follow the tone and style of each article. "
-                    "Act as impressive as you can. Refer to Lebanese politics when needed.")
-    })
-    st.session_state.messages.append({
-        "role": "model",
-        "content": "Hello! How can I help you today?"
-    })
+# ---------- VECTOR DB ----------
+embeddings = GoogleGenerativeAIEmbeddings(
+    model="models/embedding-001",
+    google_api_key=api_key
+)
 
-# --- Display Chat History ---
-for message in st.session_state.messages[1:]:  # Skip system prompt
-    with st.chat_message(message["role"] if message["role"] == "user" else "assistant"):
-        st.markdown(message["content"])
+vector_store = Chroma(
+    collection_name="news_articles",
+    embedding_function=embeddings,
+    persist_directory="./vector_db"
+)
 
-# --- Chat Input ---
-if prompt := st.chat_input("What's on your mind?"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
+retriever = vector_store.as_retriever(search_kwargs={"k": 4})
 
-    with st.chat_message("user"):
-        st.markdown(prompt)
+# ---------- STREAMLIT UI ----------
+st.set_page_config(page_title="🥷 SamurAI — Lebanon News Chatbot", layout="centered")
+st.title("🥷 SamurAI — Lebanon News Chatbot")
+st.caption("Your Lebanese news assistant powered by Gemini.")
 
-    # --- Search vector DB for relevant articles ---
-    docs = search_articles(prompt, k=3)
+# ---------- SESSION STATE ----------
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
-    if docs:
-        combined_content = "\n\n".join(d.page_content for d in docs)
-        debug_articles = "\n".join(
-            [f"- [{doc.metadata['title']}]({doc.metadata['url']})" for doc in docs]
-        )
-        prompt_with_context = (f"Based on the following articles, answer the question:\n\n"
-                               f"{prompt}\n\nArticles:\n{combined_content}")
-    else:
-        combined_content = None
-        debug_articles = "No relevant articles found."
-        prompt_with_context = prompt  # Ask Gemini without extra context
+if "references" not in st.session_state:
+    st.session_state.references = []
 
-    # --- Prepare chat history for Gemini ---
-    api_history_dicts = []
-    for message in st.session_state.messages[:-1]:
-        role = message["role"]
-        if role not in ["user", "model"]:
-            continue
-        api_history_dicts.append({
-            "role": role,
-            "parts": [{"text": message["content"]}]
+# ---------- HELPER FUNCTIONS ----------
+
+def format_references(docs, start_idx=1):
+    refs = []
+    for idx, doc in enumerate(docs, start=start_idx):
+        meta = doc.metadata
+        refs.append({
+            "id": idx,
+            "title": meta.get("title", "No Title"),
+            "url": meta.get("url", "#"),
+            "source": meta.get("source", "Unknown"),
+            "date": meta.get("date", "Unknown"),
+            "content": doc.page_content
         })
+    return refs
 
+def build_context(docs):
+    context = ""
+    for idx, doc in enumerate(docs, start=1):
+        meta = doc.metadata
+        context += f"[{idx}] {meta.get('source', 'Unknown')} - \"{meta.get('title', 'No Title')}\" ({meta.get('date', 'Unknown')}): {doc.page_content}\n\n"
+    return context
+
+def build_markdown_citations(refs):
+    if not refs:
+        return "_No articles found._"
+    citations = []
+    for ref in refs:
+        link = f"[{ref['title']}]({ref['url']})"
+        citations.append(f"[{ref['id']}] {ref['source']} - {link} ({ref['date']})")
+    return "\n".join(citations)
+
+def match_reference(user_input):
+    for ref in st.session_state.references:
+        if str(ref["id"]) in user_input:
+            return ref
+        if ref["title"].lower() in user_input.lower():
+            return ref
+    return None
+
+def summarize_article(content):
+    model = genai.GenerativeModel(MODEL_NAME)
+    prompt = f"Summarize the following article:\n\n{content}"
+    response = model.generate_content(prompt)
+    return response.text.strip() if response.text else "No summary available."
+
+def search_tavily(query):
+    results = []
     try:
-        chat = model.start_chat(history=api_history_dicts)
-        with st.spinner("I'm thinking, give me a second..."):
-            response = chat.send_message(prompt_with_context)
+        tavily_results = tavily_client.search(
+            query=query,
+            search_depth="advanced",
+            max_results=5
+        )["results"]
 
-        model_response_content = response.text.strip() if response.text else "(No response from Gemini.)"
+        for idx, r in enumerate(tavily_results):
+            doc = Document(
+                page_content=r["content"] or r["title"],
+                metadata={
+                    "title": r["title"],
+                    "url": r["url"],
+                    "source": "Web (Tavily)",
+                    "date": "Latest"
+                }
+            )
+            results.append(doc)
+    except Exception as e:
+        st.warning(f"Tavily search failed: {e}")
 
-        st.session_state.messages.append({"role": "model", "content": model_response_content})
+    return results
+
+# ---------- CHAT HISTORY ----------
+for chat in st.session_state.chat_history:
+    with st.chat_message("user"):
+        st.markdown(chat["user"])
+    with st.chat_message("assistant"):
+        st.markdown(chat["assistant"])
+
+# ---------- CHAT INPUT ----------
+query = st.chat_input("Ask a question or request an article summary...")
+
+if not query and not st.session_state.chat_history:
+    with st.chat_message("assistant"):
+        st.markdown("Hello! 👋 How can I help you today? You can ask questions or request article summaries.")
+
+if query:
+    with st.chat_message("user"):
+        st.markdown(query)
+
+    # ---------- SUMMARIZATION HANDLER ----------
+    ref = match_reference(query)
+    if any(kw in query.lower() for kw in ["summarize", "summary", "summarise"]) and ref:
+        with st.chat_message("assistant"):
+            st.markdown(f"**Summary for:** {ref['title']}")
+            with st.spinner("🥷 SamurAI is summarizing..."):
+                summary = summarize_article(ref["content"])
+            st.success(summary)
+            st.session_state.chat_history.append({"user": query, "assistant": summary})
+
+    else:
+        # ---------- CONTEXT RETRIEVAL ----------
+        relevant_docs = retriever.get_relevant_documents(query)
+        st.session_state.references = format_references(relevant_docs)
+
+        if len(relevant_docs) < 2 and tavily_key:
+            web_docs = search_tavily(query)
+            all_docs = relevant_docs + web_docs
+            st.session_state.references = format_references(all_docs)
+        else:
+            all_docs = relevant_docs
+
+        context = build_context(all_docs)
+
+        # ---------- GEMINI PROMPT ----------
+        system_prompt = (
+            f"You are SamurAI, a Lebanese news expert assistant. Use the context below to answer the user's question. "
+            f"Include citations in the form [n] linking to the article's source. If no relevant context exists, answer using general knowledge."
+            f"\n\nContext:\n{context}\n\nUser Question: {query}"
+        )
+
+        model = genai.GenerativeModel(MODEL_NAME)
 
         with st.chat_message("assistant"):
-            st.markdown(model_response_content)
+            with st.spinner("🥷 SamurAI is thinking..."):
+                response = model.generate_content(system_prompt)
+            reply = response.text.strip() if response.text else "I couldn't generate a response."
 
-        # --- Optional: Show which articles were used ---
-        if combined_content:
-            with st.expander("🔎 Articles used for this answer"):
-                st.markdown(debug_articles)
+            st.markdown(reply)
 
-    except Exception as e:
-        st.error(f"An error occurred while calling Gemini: {e}")
+            # ---------- REFERENCES ----------
+            st.markdown("### References")
+            st.markdown(build_markdown_citations(st.session_state.references), unsafe_allow_html=True)
+
+            st.info("Tip: You can say things like 'Summarize article 1' or 'Summarize \"Title\"' anytime.")
+
+        # ---------- SAVE TO CHAT HISTORY ----------
+        st.session_state.chat_history.append({"user": query, "assistant": reply})
+
+st.markdown("---")
+st.markdown("Made with ❤ for the Software Engineering Class")

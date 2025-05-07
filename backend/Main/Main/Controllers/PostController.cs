@@ -24,32 +24,24 @@ namespace Main.Controllers
             _mediator = mediator;
         }
 
-        // // GET: /api/posts
-        // [HttpGet]
-        // public async Task<ActionResult<IEnumerable<Article>>> GetPosts()
-        // {
-        //     var posts = await _context.Articles.ToListAsync();
-        //     return Ok(posts);
-        // }
-        //
-        // [HttpGet("[action]")]
-        // public async Task<ActionResult<List<CityArticlesDto>>> GetMapPosts()
-        // {
-        //     var res = await _mediator.Send(new FetchHeadlinesQuery());
-        //     
-        //     if (res != null) return Ok(res);
-        //     return NoContent();
-        //     
-        // }
-        //
-        // [HttpGet("[action]")]
-        // public async Task<ActionResult<List<CityArticlesDto>>> GetFeedPosts()
-        // {
-        //     var res = await _mediator.Send(new FetchFeedPostsQuery(2));
-        //     
-        //     if (res != null) return Ok(res);
-        //     return NoContent();
-        //     
-        // }
+        // GET: /api/posts
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Article>>> GetPosts()
+        {
+            var posts = await _context.Articles.ToListAsync();
+            return Ok(posts);
+        }
+ 
+        
+         
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<CityArticlesDto>>> GetFeedPosts()
+        {
+            var res = await _mediator.Send(new FetchFeedPostsQuery(2));
+             
+            if (res != null) return Ok(res);
+            return NoContent();
+             
+        }
     }
 }
